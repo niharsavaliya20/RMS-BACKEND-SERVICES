@@ -5,7 +5,7 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { AuthController } from './auth.controller';
 import { jwtConstants } from '../constants/constant';
-import { UserSchema } from 'src/user/user.schema';
+import { UserSchema } from 'src/features/user/user.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
@@ -16,7 +16,7 @@ import { MongooseModule } from '@nestjs/mongoose';
             secret: jwtConstants.secret,
             signOptions: { expiresIn: '10h' },
         }),
-        MongooseModule.forFeature([{ name: 'User', schema: UserSchema }])
+        MongooseModule.forFeature([{ name: 'user', schema: UserSchema },])
     ],
     controllers: [AuthController],
     providers: [AuthService, JwtStrategy],

@@ -3,7 +3,8 @@ import { AuthService } from './auth.service';
 import { SignUpDto } from 'src/Dto/signup.dto';
 import { LoginDto } from 'src/Dto/login.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from 'src/user/user.schema';
+import { User } from 'src/features/user/user.schema';
+
 
 @Controller('auth')
 export class AuthController {
@@ -18,6 +19,7 @@ export class AuthController {
   login(@Body() loginDto: LoginDto): Promise<{ token: string }> {
     return this.authService.login(loginDto);
   }
+  
 
   @Post('/oauthLogin')
   googleLogin(@Body() loginDto: LoginDto): Promise< User | {token: string}> {

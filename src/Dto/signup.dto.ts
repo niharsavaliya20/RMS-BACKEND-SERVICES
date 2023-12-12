@@ -14,9 +14,9 @@ export class SignUpDto {
   readonly loginType: string;
 
 
-  // @IsNotEmpty()
-  // @IsArray()
-  // roles: string[]; 
+  @IsNotEmpty()
+  @IsArray()
+  roles: string[]; 
   
   @IsNotEmpty()
   @IsString()
