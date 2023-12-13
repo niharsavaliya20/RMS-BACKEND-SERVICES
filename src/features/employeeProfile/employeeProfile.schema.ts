@@ -6,16 +6,19 @@ import { User } from '../user/user.schema';
   timestamps: true,
 })
 
-export class Profile extends Document {
+export class employeeProfile extends Document {
 
   @Prop()
-  company: string;
+  designation: string;
 
   @Prop()
   experience: string;
 
   @Prop()
-  designation: string;
+  address: string;
+
+  @Prop()
+  salary: string;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
@@ -25,7 +28,7 @@ export class Profile extends Document {
 }
 
 
-export const ProfileSchema = SchemaFactory.createForClass(Profile);
+export const EmployeeProfileSchema = SchemaFactory.createForClass(employeeProfile);
 
 
 // isDeleted: {

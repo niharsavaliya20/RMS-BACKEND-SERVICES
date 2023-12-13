@@ -25,8 +25,8 @@ export class AuthService {
       email,
       password,
       loginType : LoginType.System,
-      roles
-      
+      roles,
+      isActive: true
     });
 
     return user;

@@ -7,14 +7,16 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './features/user/user.module';
 import { MongoDatabaseProviderModule } from './providers/database/mongo/provider.module';
 import { MongoConfigModule } from './mongo/config.module';
-import { ProfileModule } from './features/profile/profile.module';
+import { EmployeeProfileModule } from './features/employeeProfile/employeeProfile.module';
+import { EmployerProfileModule } from './features/employerProfile/employer.module';
 
 
 @Module({
   imports: [
     AuthModule,
     UserModule,
-    ProfileModule,
+    EmployeeProfileModule,
+    EmployerProfileModule,
     ConfigModule.forRoot(),
     // MongoConfigModule,
     // MongoDatabaseProviderModule,

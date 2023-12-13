@@ -1,10 +1,11 @@
 import { IsArray, IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
-export class ProfileDto {
+export class EmployeeProfileDto {
 
-    company : String;
-    experience : String;
     designation : String;
+    experience : String;
+    address : String;
+    salary : String;
     userId : String
 
 }

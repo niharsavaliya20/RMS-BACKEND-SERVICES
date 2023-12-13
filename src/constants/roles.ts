@@ -1,4 +1,4 @@
 export const Roles = {
-    EMPLOYEE: 'employee',
-    EMPLOYER: 'employer'
+    EMPLOYEE: 'Employee',
+    EMPLOYER: 'Employer'
   };
