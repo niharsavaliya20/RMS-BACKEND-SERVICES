@@ -25,34 +25,9 @@ export class User extends Document {
   @Prop()
   isActive: boolean;
 
+  @Prop()
+  deletedAt: Date;
+
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
-
-
-//   @Prop({
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: 'Profile',
-     
-//   })
-//   profile: Profile;
-
-// { unique: [true, 'Duplicate email entered'] }
-
-
-// column : {
-//   name : String,
-//   email : String,
-//   password : String,
-//   loginType : String,
-//   roles : [],
-
-//   relations: {
-//     profile: {
-//       type: 'one-to-one',
-//       target: 'Profile',
-//       cascade: true,
-//       eager: true,
-//     },
-//   },
-// }

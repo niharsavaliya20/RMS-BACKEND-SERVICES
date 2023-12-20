@@ -33,5 +33,9 @@ export class EmployeeProfileService{
     return this.employeeProfileModel.findByIdAndDelete(id).exec();
   }
 
+  async updateUserEmployeeProfileByUserId(userId: string, employeeprofileDto: EmployeeProfileDto): Promise<any | null> {
+    return this.employeeProfileModel.findOneAndUpdate({userId}, employeeprofileDto, { new: true }).exec();
+  }
+
    
 }

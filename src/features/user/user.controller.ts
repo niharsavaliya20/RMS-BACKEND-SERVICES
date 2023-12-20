@@ -1,7 +1,9 @@
 import { Body, Controller, Delete, Get, Param, Put } from "@nestjs/common";
-import { User } from "./user.schema";
+// import { User } from "./user.schema";
 import { UserService } from "./user.service";
 import {  updateSignUpDto } from "src/Dto/updateSignUp.dto";
+import { UserInterface } from "src/Dto/interfaces/user.interface";
+import { User } from "./user.schema";
 
 
 @Controller('user')
@@ -10,47 +12,52 @@ export class UserController {
 
   @Get('allUser')
   // @UseGuards(AuthGuard("jwt"))
-  getAllSignUp(): Promise<User[]> {
+  getAllSignUp(): Promise<any> {
     return this.userService.getAllSignUp();
   }
 
   @Get('get/:id')
-  async findById(@Param('id') id: string): Promise<User[] | null> {
-    return this.userService.findById(id);
+  async findUserById(@Param('id') id: string): Promise<any| null> {
+    return this.userService.findUserById(id);
   }
 
   @Get('employerProfile/all')
-  async employerWithProfile(): Promise<User[] | null> {
-    return this.userService.employerWithProfile();
+  async usersWithEmployerProfile(): Promise<User[] | null> {
+    return this.userService.usersWithEmployerProfile();
   }
 
   @Get('employerProfile/:id')
-  async employerProfileId(@Param('id') id: string): Promise<User[] | null> {
-    return this.userService.employerProfileId(id);
+  async userEmployerProfileId(@Param('id') id: string): Promise<any| null> {
+    return this.userService.userEmployerProfileId(id);
   }
 
-  @Get('get/:email')
-  async findByEmail(@Param('email') email: string): Promise<User | null> {
-    return this.userService.findByEmail(email);
+  @Get('getUser/:email')
+  async findUserByEmail(@Param('email') email: string): Promise<any | null> {
+    return this.userService.findUserByEmail(email);
   }
 
   @Get('employeeProfile/all')
-  async employeeWithProfile(): Promise<User[] | null> {
-    return this.userService.employeeWithProfile();
+  async usersWithEmployeeWithProfile(): Promise<User[] | null> {
+    return this.userService.usersWithEmployeeWithProfile();
   }
 
   @Get('employeeProfile/:id')
-  async employeeProfileId(@Param('id') id: string): Promise<User[] | null> {
-    return this.userService.employeeProfileId(id);
+  async userEmployeeProfileId(@Param('id') id: string): Promise<any | null> {
+    return this.userService.userEmployeeProfileId(id);
   }
 
   @Put('delete/:id')  // deactive user
-  async updateById(@Param('id') id: string): Promise<User | null> {
-    return this.userService.updateById(id);
+  async deActivateUserById(@Param('id') id: string): Promise<any | null> {
+    return this.userService.deActivateUserById(id);
   }
 
   @Put('update/:id')
   async updateUserById(@Param('id') id: string, @Body() updateUserDto: updateSignUpDto): Promise<any | null> {
     return this.userService.updateUserById(id, updateUserDto);
+  }
+
+  @Put('update/userProfile/:id')
+  async updateUserProfileById(@Param('id') id: string, @Body() updateUserDto: UserInterface): Promise<any | null> {
+    return this.userService.updateUserProfileById(id, updateUserDto);
   }
 }

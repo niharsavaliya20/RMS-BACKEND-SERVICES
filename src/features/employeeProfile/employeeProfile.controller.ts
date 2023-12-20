@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UseGuards, Param, Delete } from "@nestjs/common";
+import { Controller, Get, Post, Body, UseGuards, Param, Delete, Put } from "@nestjs/common";
 import { EmployeeProfileService } from "./employeeProfile.service";
 import { AuthGuard } from "@nestjs/passport";
 import { employeeProfile } from "./employeeProfile.schema";
@@ -33,4 +33,9 @@ export class EmployeeProfileController {
     async deleteEmployeeById(@Param('id') id: string): Promise<employeeProfile | null> {
         return this.profileService.deleteEmployeeById(id);
     }
+
+    @Put('update/profile/:userId')
+    async updateEmployeeProfileByUserId(@Param('userId') userId: string, @Body() employeeprofileDto: EmployeeProfileDto): Promise<any | null> {
+      return this.profileService.updateUserEmployeeProfileByUserId(userId, employeeprofileDto);
+    } 
 }

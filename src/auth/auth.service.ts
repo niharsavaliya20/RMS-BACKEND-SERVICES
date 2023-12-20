@@ -26,7 +26,8 @@ export class AuthService {
       password,
       loginType : LoginType.System,
       roles,
-      isActive: true
+      isActive: true,
+      deletedAt:null
     });
 
     return user;
@@ -62,7 +63,8 @@ export class AuthService {
         email,
         password,
         loginType : LoginType.Google,
-        roles : Roles.EMPLOYEE
+        roles : Roles.EMPLOYEE,
+        isActive: true
       });
 
       return goggleuser;
