@@ -18,7 +18,7 @@ export class AuthService {
   ) { }
 
   async signUp(signUpDto: SignUpDto): Promise<User> {
-    const { name, email, password,loginType ,roles}= signUpDto;
+    const { name, email, password,loginType ,roles,accountId}= signUpDto;
 
     const user = await this.userModel.create({
       name,
@@ -26,6 +26,7 @@ export class AuthService {
       password,
       loginType : LoginType.System,
       roles,
+      accountId,
       isActive: true,
       deletedAt:null
     });
@@ -33,7 +34,7 @@ export class AuthService {
     return user;
   }
 
-  async login(loginDto: LoginDto): Promise<{ token: string }> {
+  async login(loginDto: LoginDto): Promise<{ id:string, token: string , roles : string[], emails : string}> {
     const { email, password } = loginDto;
 
     const user = await this.userModel.findOne({ email });
@@ -47,11 +48,13 @@ export class AuthService {
     }
 
     const token = this.jwtService.sign({ id: user._id, email: user.email , roles: user.roles});
-
-    return { token };
+    const id = user.id;
+    const roles = user.roles;
+    const emails = user.email;
+    return { id ,token, roles, emails};
   }
 
-  async googleLogin( loginDto: any): Promise<User | {token : string} > {
+  async googleLogin( loginDto: any): Promise<User | {id:string,token : string} > {
      const { name,email, password, loginType,roles} = loginDto;
 
     const user = await this.userModel.findOne({ email });
@@ -75,8 +78,9 @@ export class AuthService {
       throw new UnauthorizedException('Invalid email or password');
     }
 
-    const token = this.jwtService.sign({ id: user._id, email: user.email });
-
-    return { token };
+    const token = this.jwtService.sign({ id: user._id, email: user.email, roles: user.roles });
+    const id = user.id;
+   
+    return { token ,id };
   }
 }

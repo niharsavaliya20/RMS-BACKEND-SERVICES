@@ -16,13 +16,13 @@ export class AuthController {
   }
 
   @Post('/login')
-  login(@Body() loginDto: LoginDto): Promise<{ token: string }> {
+  login(@Body() loginDto: LoginDto): Promise<{id:string, token: string , roles : string[], emails : string}> {
     return this.authService.login(loginDto);
   }
   
 
   @Post('/oauthLogin')
-  googleLogin(@Body() loginDto: LoginDto): Promise< User | {token: string}> {
+  googleLogin(@Body() loginDto: LoginDto): Promise< User | {id:string,token: string}> {
      return this.authService.googleLogin(loginDto);
   }
 

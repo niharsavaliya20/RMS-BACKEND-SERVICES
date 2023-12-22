@@ -9,6 +9,8 @@ import { MongoDatabaseProviderModule } from './providers/database/mongo/provider
 import { MongoConfigModule } from './mongo/config.module';
 import { EmployeeProfileModule } from './features/employeeProfile/employeeProfile.module';
 import { EmployerProfileModule } from './features/employerProfile/employer.module';
+import { JobPostingModule } from './features/jobPosting/jobPosting.module';
+import { AccountModule } from './features/account/account.module';
 
 
 @Module({
@@ -17,6 +19,8 @@ import { EmployerProfileModule } from './features/employerProfile/employer.modul
     UserModule,
     EmployeeProfileModule,
     EmployerProfileModule,
+    JobPostingModule,
+    AccountModule,
     ConfigModule.forRoot(),
     // MongoConfigModule,
     // MongoDatabaseProviderModule,

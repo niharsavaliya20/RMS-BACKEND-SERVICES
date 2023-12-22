@@ -16,7 +16,11 @@ export class SignUpDto {
 
   @IsNotEmpty()
   @IsArray()
-  roles: string[]; 
+  roles: string[];
+
+  @IsNotEmpty()
+  @IsString()
+  readonly accountId: string;
   
   @IsNotEmpty()
   @IsString()
