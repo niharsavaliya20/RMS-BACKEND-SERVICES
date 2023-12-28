@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, UseGuards, Param, Delete, Put } from "@nestjs/common";
 import { JobPostingService } from "./jobPosting.service";
 import { JobPostingDto } from "src/Dto/jobPosting.dto";
-import { JobPosting } from "./jobPosting.schema";
 
 
 @Controller('jobposting')

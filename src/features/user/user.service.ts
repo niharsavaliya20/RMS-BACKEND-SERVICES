@@ -5,7 +5,6 @@ import { Model, Types } from "mongoose";
 import { updateSignUpDto } from "src/Dto/updateSignUp.dto";
 import { User } from "./user.schema";
 import { UserInterface } from "src/Dto/interfaces/user.interface";
-
 // import { Userr } from "src/Dto/interfaces/user.interface";
 
 @Injectable()
@@ -16,8 +15,8 @@ export class UserService {
   private userModel: Model<any>) { }
 
   async getAllSignUp(): Promise<any> {
-    const profile = await this.userModel.find();
-    return profile;
+    return this.userModel.find();
+    
   }
 
   async findUserById(id: string): Promise<any | null> {
@@ -64,7 +63,7 @@ export class UserService {
       },
       {
         $addFields: {
-          profile: { $arrayElemAt: ['$employerprofile', 0] }
+          profile: { $arrayElemAt: ['$employerprofile', 0] }  //data comes in object
         }
       },
       {

@@ -13,8 +13,13 @@ export class AccountController {
 
     @Get('get/:id')
     async findAccountById(@Param('id') id: string): Promise<any | null> {
-        return this.accountService.findAccountById(id);
+        return this.accountService.findAccountById(id)
     }
+
+    @Get('post/all')
+    async getAllJobPost(): Promise<any> {
+    return this.accountService.getAllJobPost();
+  }
 
     @Put('delete/:id')  // deactive user
     async deActivateAccountById(@Param('id') id: string): Promise<any | null> {
