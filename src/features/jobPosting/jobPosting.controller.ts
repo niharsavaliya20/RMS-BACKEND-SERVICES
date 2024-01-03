@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UseGuards, Param, Delete, Put } from "@nestjs/common";
+import { Controller, Get, Post, Body, UseGuards, Param, Delete, Put, Query, ParseIntPipe } from "@nestjs/common";
 import { JobPostingService } from "./jobPosting.service";
 import { JobPostingDto } from "src/Dto/jobPosting.dto";
 
@@ -14,12 +14,15 @@ export class JobPostingController {
 
   @Get('get/:id')
   async findJobPostingById(@Param('id') id: string): Promise<any | null> {
+    
     return this.jobPostingService.findJobPostingById(id);
   }
 
   @Get('post/all')
-  async getAllJobPost(): Promise<any> {
-    return this.jobPostingService.getAllJobPost();
+  async getAllJobPost(  @Query('page') page: number = 1,
+  @Query('limit', ParseIntPipe) limit: number = 10): Promise<any> {
+    
+    return this.jobPostingService.getAllJobPost(page,limit);
   }
 
   @Put('delete/:id')  // deactive user

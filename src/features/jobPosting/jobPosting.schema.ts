@@ -39,6 +39,9 @@ export class JobPosting extends Document {
   expectedSalary: string;
 
   @Prop()
+  jobType: string;
+
+  @Prop()
   minExp: string;
 
   @Prop()

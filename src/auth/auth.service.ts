@@ -19,7 +19,7 @@ export class AuthService {
 
   async signUp(signUpDto: SignUpDto): Promise<User> {
     const { name, email, password,loginType ,roles,accountId}= signUpDto;
-
+    
     const user = await this.userModel.create({
       name,
       email,

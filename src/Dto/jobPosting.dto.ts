@@ -13,6 +13,7 @@ export class JobPostingDto {
     skill: String;
     minExp: String;
     maxExp: String;
-    timeAvailability : String
-
+    jobType: String;
+    selectedTimezone : string;
+    timeAvailability : string;
 }
