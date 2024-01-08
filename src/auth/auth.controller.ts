@@ -4,6 +4,8 @@ import { SignUpDto } from 'src/Dto/signup.dto';
 import { LoginDto } from 'src/Dto/login.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/features/user/user.schema';
+import mongoose from 'mongoose';
+mongoose.set('debug', true);
 
 
 @Controller('auth')

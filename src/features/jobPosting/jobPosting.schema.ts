@@ -28,7 +28,7 @@ export class JobPosting extends Document {
 
   @Prop()
   jobDescription: string;
-
+  
   @Prop()
   skill: string;
 
@@ -49,6 +49,12 @@ export class JobPosting extends Document {
 
   @Prop()
   timeAvailability: string;
+
+  @Prop()
+  selectedTimezone: string;
+
+  @Prop()
+  weekDays: string[];
 
   @Prop()
   isActive: boolean;

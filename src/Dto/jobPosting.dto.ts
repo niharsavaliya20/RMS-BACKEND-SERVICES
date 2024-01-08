@@ -16,4 +16,5 @@ export class JobPostingDto {
     jobType: String;
     selectedTimezone : string;
     timeAvailability : string;
+    weekDays: string[]
 }

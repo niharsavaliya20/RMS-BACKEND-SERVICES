@@ -18,12 +18,26 @@ export class JobPostingController {
     return this.jobPostingService.findJobPostingById(id);
   }
 
+  // @Get('post/all')
+  // async getAllJobPost( ): Promise<any> {
+    
+  //   return this.jobPostingService.getAllJobPost();
+    
+  // }
   @Get('post/all')
   async getAllJobPost(  @Query('page') page: number = 1,
   @Query('limit', ParseIntPipe) limit: number = 10): Promise<any> {
     
     return this.jobPostingService.getAllJobPost(page,limit);
+    
   }
+
+  @Get('total')
+  async getTotalCount() {
+    const totalCount = await this.jobPostingService.getTotalCount();
+    return totalCount;
+  }
+
 
   @Put('delete/:id')  // deactive user
   async deActivatePostById(@Param('id') id: string): Promise<any | null> {
