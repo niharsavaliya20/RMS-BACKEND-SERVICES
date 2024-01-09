@@ -5,7 +5,7 @@ import { LoginDto } from 'src/Dto/login.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/features/user/user.schema';
 import mongoose from 'mongoose';
-mongoose.set('debug', true);
+mongoose.set('debug', true);   //for showing log
 
 
 @Controller('auth')

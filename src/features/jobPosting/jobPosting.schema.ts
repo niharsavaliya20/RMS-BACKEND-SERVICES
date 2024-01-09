@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 import { Account } from '../account/account.schema';
+import { IsNotEmpty } from 'class-validator';
 
 @Schema({
   timestamps: true,
@@ -24,6 +25,7 @@ export class JobPosting extends Document {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'account',
   })
+  @IsNotEmpty()
   accountId: Account;
 
   @Prop()
@@ -54,7 +56,7 @@ export class JobPosting extends Document {
   selectedTimezone: string;
 
   @Prop()
-  weekDays: string[];
+  selectedDays: string[];
 
   @Prop()
   isActive: boolean;

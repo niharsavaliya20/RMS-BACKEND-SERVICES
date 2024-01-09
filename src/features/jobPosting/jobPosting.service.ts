@@ -17,7 +17,7 @@ export class JobPostingService {
   
     const { title, application, status,location,accountId, 
       salary, jobType, expectedSalary, timeAvailability, selectedTimezone,
-       jobDescription, skill, minExp, maxExp, weekDays} = jobPostingDto;
+       jobDescription, skill, minExp, maxExp, selectedDays} = jobPostingDto;
     
     const post = await this.jobPostingModel.create({
       title,
@@ -34,7 +34,7 @@ export class JobPostingService {
       jobType,
       timeAvailability,
       selectedTimezone,
-      weekDays,
+      selectedDays,
       isActive: true,
       deletedAt: null
     });
