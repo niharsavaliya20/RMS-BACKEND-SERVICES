@@ -1,10 +1,12 @@
-import { Injectable } from "@nestjs/common";
+import { Headers, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, Types } from "mongoose";
 import { JobPostingDto } from "src/Dto/jobPosting.dto";
 import { JobPosting, JobPostingSchema } from "./jobPosting.schema";
 import { Status } from "src/constants/status";
 import moment from "moment-timezone";
+import { jwtConstants } from "src/constants/constant";
+import * as jwt from 'jsonwebtoken';
 
 
 @Injectable()
@@ -13,18 +15,18 @@ export class JobPostingService {
   constructor(@InjectModel('jobposting')
   private jobPostingModel: Model<JobPosting>) { }
 
-  async jobPost(jobPostingDto: JobPostingDto): Promise<any> {
-  
+  async jobPost(jobPostingDto: JobPostingDto, Id:string): Promise<any> {
+    
     const { title, application, status,location,accountId, 
       salary, jobType, expectedSalary, timeAvailability, selectedTimezone,
-       jobDescription, skill, minExp, maxExp, selectedDays} = jobPostingDto;
-    
+      jobDescription, skill, minExp, maxExp, selectedDays} = jobPostingDto;
+      
     const post = await this.jobPostingModel.create({
       title,
       application,
       location,
       status: Status.Active,
-      accountId,
+      accountId : Id,
       salary,
       expectedSalary,
       jobDescription,
@@ -41,6 +43,7 @@ export class JobPostingService {
     return post;
   }
 
+
   async findJobPostingById(id: string): Promise<any | null> {
     return this.jobPostingModel.findById(id).exec();
 
@@ -51,9 +54,40 @@ export class JobPostingService {
 
   //  }
   //  page: number = 1, limit: number = 10
-  async getAllJobPost(page, limit): Promise<any> {
+  async getAllJobPost(page, limit,accountId): Promise<any> {
     const offset = page * limit;
     return await this.jobPostingModel.aggregate([
+      {
+        $match: { accountId : accountId}
+      },
+      {
+
+        $facet: {
+          count: [
+            { $count: "totalcount" }
+          ],
+          listedJobs: [
+            {
+              $sort: { isActive: -1, createdAt: -1 }
+            },
+            {
+              $skip: offset
+            },
+            {
+              $limit: limit
+            }
+          ],
+        },
+      },
+    ])
+  } 
+
+  async getAllJobList(page, limit): Promise<any> {
+    const offset = page * limit;
+    return await this.jobPostingModel.aggregate([
+      {
+        $match: { isActive : true}
+      },
       {
         $facet: {
           count: [
@@ -73,6 +107,7 @@ export class JobPostingService {
         },
       },
     ])
+  } 
     // return await this.jobPostingModel.aggregate([
     //     {
     //       $sort:({"isActive": -1,"createdAt" : -1})
@@ -99,7 +134,7 @@ export class JobPostingService {
     //     }}
 
     //   ])    
-  }
+  
 
   async getTotalCount() {
     const totalCount = await this.jobPostingModel.countDocuments();

@@ -11,6 +11,7 @@ import { EmployeeProfileModule } from './features/employeeProfile/employeeProfil
 import { EmployerProfileModule } from './features/employerProfile/employer.module';
 import { JobPostingModule } from './features/jobPosting/jobPosting.module';
 import { AccountModule } from './features/account/account.module';
+import { UserJobPostingModule } from './features/user_JobPosting/user_JobPosting.module';
 
 
 @Module({
@@ -20,6 +21,7 @@ import { AccountModule } from './features/account/account.module';
     EmployeeProfileModule,
     EmployerProfileModule,
     JobPostingModule,
+    UserJobPostingModule,
     AccountModule,
     ConfigModule.forRoot(),
     // MongoConfigModule,

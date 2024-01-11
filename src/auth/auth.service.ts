@@ -34,7 +34,7 @@ export class AuthService {
     return user;
   }
 
-  async login(loginDto: LoginDto): Promise<{ id:string, token: string , roles : string[], emails : string}> {
+  async login(loginDto: LoginDto): Promise<{ id:string, token: string , roles : string[], emails : string, accountId : {}}> {
     const { email, password } = loginDto;
 
     const user = await this.userModel.findOne({ email });
@@ -47,11 +47,12 @@ export class AuthService {
       throw new UnauthorizedException('Invalid email or password');
     }
 
-    const token = this.jwtService.sign({ id: user._id, email: user.email , roles: user.roles});
+    const token = this.jwtService.sign({ id: user._id, email: user.email , roles: user.roles, accountId: user.accountId});
     const id = user.id;
     const roles = user.roles;
     const emails = user.email;
-    return { id ,token, roles, emails};
+    const accountId = user.accountId
+    return { id ,token, roles, emails, accountId};
   }
 
   async googleLogin( loginDto: any): Promise<User | {id:string,token : string} > {

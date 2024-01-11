@@ -1,15 +1,18 @@
-import { Controller, Get, Post, Body, UseGuards, Param, Delete, Put, Query, ParseIntPipe } from "@nestjs/common";
+import { Controller, Get, Post, Body, UseGuards, Param, Delete, Put, Query, ParseIntPipe, Headers, Request } from "@nestjs/common";
 import { JobPostingService } from "./jobPosting.service";
 import { JobPostingDto } from "src/Dto/jobPosting.dto";
-
+import { AuthGuard } from "@nestjs/passport";
 
 @Controller('jobposting')
 export class JobPostingController {
   constructor(private jobPostingService: JobPostingService) { }
 
   @Post('/create')   // new create post
-  jobPost(@Body() jobPostingDto: JobPostingDto): Promise<any> {
-    return this.jobPostingService.jobPost(jobPostingDto);
+  @UseGuards(AuthGuard("jwt"))
+  jobPost(@Body() jobPostingDto: JobPostingDto,@Request() req): Promise<any> {
+    
+    const Id:string = req.user.accountId
+    return this.jobPostingService.jobPost(jobPostingDto,Id);
   }
 
   @Get('get/:id')
@@ -18,18 +21,19 @@ export class JobPostingController {
     return this.jobPostingService.findJobPostingById(id);
   }
 
-  // @Get('post/all')
-  // async getAllJobPost( ): Promise<any> {
-    
-  //   return this.jobPostingService.getAllJobPost();
-    
-  // }
   @Get('post/all')
-  async getAllJobPost(  @Query('page') page: number = 1,
-  @Query('limit', ParseIntPipe) limit: number = 10): Promise<any> {
-    
-    return this.jobPostingService.getAllJobPost(page,limit);
-    
+  @UseGuards(AuthGuard("jwt"))
+  async getAllJobPost(@Query('page') page: number = 1,
+  @Query('limit', ParseIntPipe) limit: number = 10,@Request() req): Promise<any> {
+    const accountId = req.user.accountId
+    return this.jobPostingService.getAllJobPost(page,limit,accountId);
+  }
+
+  @Get('jobList/all')
+  // @UseGuards(AuthGuard("jwt"))
+  async getAllJobList(@Query('page') page: number = 1,
+  @Query('limit', ParseIntPipe) limit: number = 10,): Promise<any> {
+    return this.jobPostingService.getAllJobList(page,limit);
   }
 
   @Get('total')
