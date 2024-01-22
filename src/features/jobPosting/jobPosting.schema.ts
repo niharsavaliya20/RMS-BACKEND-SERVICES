@@ -21,6 +21,9 @@ export class JobPosting extends Document {
   @Prop()
   status: string;
 
+  @Prop()
+  applied: boolean;
+
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'account',

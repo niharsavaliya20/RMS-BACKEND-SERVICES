@@ -13,6 +13,9 @@ export class SignUpDto {
   @IsString()
   readonly loginType: string;
 
+  @IsNotEmpty()
+  @IsString()
+  readonly companyName: string;
 
   @IsNotEmpty()
   @IsArray()

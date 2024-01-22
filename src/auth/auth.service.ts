@@ -18,7 +18,7 @@ export class AuthService {
   ) { }
 
   async signUp(signUpDto: SignUpDto): Promise<User> {
-    const { name, email, password,loginType ,roles,accountId}= signUpDto;
+    const { name, email, password,loginType ,roles,accountId,companyName}= signUpDto;
     
     const user = await this.userModel.create({
       name,
@@ -26,6 +26,7 @@ export class AuthService {
       password,
       loginType : LoginType.System,
       roles,
+      companyName,
       accountId,
       isActive: true,
       deletedAt:null

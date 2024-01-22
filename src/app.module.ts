@@ -12,6 +12,7 @@ import { EmployerProfileModule } from './features/employerProfile/employer.modul
 import { JobPostingModule } from './features/jobPosting/jobPosting.module';
 import { AccountModule } from './features/account/account.module';
 import { UserJobPostingModule } from './features/user_JobPosting/user_JobPosting.module';
+import { CompanyProfileModule } from './features/companyProfile/companyProfile.module';
 
 
 @Module({
@@ -23,6 +24,7 @@ import { UserJobPostingModule } from './features/user_JobPosting/user_JobPosting
     JobPostingModule,
     UserJobPostingModule,
     AccountModule,
+    CompanyProfileModule,
     ConfigModule.forRoot(),
     // MongoConfigModule,
     // MongoDatabaseProviderModule,

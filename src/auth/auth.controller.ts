@@ -7,7 +7,6 @@ import { User } from 'src/features/user/user.schema';
 import mongoose from 'mongoose';
 mongoose.set('debug', true);   //for showing log
 
-
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -21,7 +20,6 @@ export class AuthController {
   login(@Body() loginDto: LoginDto): Promise<{id:string, token: string , roles : string[], emails : string, accountId:{}}> {
     return this.authService.login(loginDto);
   }
-  
 
   @Post('/oauthLogin')
   googleLogin(@Body() loginDto: LoginDto): Promise< User | {id:string,token: string}> {

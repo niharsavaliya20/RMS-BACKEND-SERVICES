@@ -9,8 +9,8 @@ export class EmployeeProfileController {
     constructor(private profileService: EmployeeProfileService) { }
 
     @Post('/create')    // new create post
-    getDetail(@Body() profileUpDto: EmployeeProfileDto): Promise<employeeProfile> {
-        return this.profileService.getDetail(profileUpDto);
+    getDetail(@Body() employeeprofileDto: EmployeeProfileDto): Promise<employeeProfile> {
+        return this.profileService.getDetail(employeeprofileDto);
     }
 
     @Get('get/:id')

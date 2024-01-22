@@ -38,11 +38,11 @@ export class JobPostingService {
       selectedTimezone,
       selectedDays,
       isActive: true,
+      applied:false,
       deletedAt: null
     });
     return post;
   }
-
 
   async findJobPostingById(id: string): Promise<any | null> {
     return this.jobPostingModel.findById(id).exec();
@@ -107,6 +107,7 @@ export class JobPostingService {
         },
       },
     ])
+
   } 
     // return await this.jobPostingModel.aggregate([
     //     {

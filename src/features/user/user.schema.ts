@@ -24,6 +24,9 @@ export class User extends Document {
   roles: string[];
 
   @Prop()
+  companyName: string;
+
+  @Prop()
   isActive: boolean;
 
   @Prop()

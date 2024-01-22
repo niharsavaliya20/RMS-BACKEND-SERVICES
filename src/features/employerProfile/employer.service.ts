@@ -6,30 +6,30 @@ import { EmployerProfileDto } from "src/Dto/employerProfile.dto";
 import { employerProfile } from "./employer.schema";
 
 @Injectable()
-export class EmployerProfileService{
+export class EmployerProfileService {
 
-    constructor(@InjectModel('employerProfile')
-    private employerProfileModel: Model<employerProfile>){}
+  constructor(@InjectModel('employerProfile')
+  private employerProfileModel: Model<employerProfile>) { }
 
-    async getDetail( profileDto: EmployerProfileDto): Promise<any>  {
-        const profile = await this.employerProfileModel.create(profileDto);
-        return profile;
-      }
+  async getDetail(profileDto: EmployerProfileDto): Promise<any> {
+    const profile = await this.employerProfileModel.create(profileDto);
+    return profile;
+  }
 
-      async findById(id: string): Promise<any | null> {
-        return this.employerProfileModel.findById(id).exec();
-      }  
+  async findById(id: string): Promise<any | null> {
+    return this.employerProfileModel.findById(id).exec();
+  }
 
-   async getAllProfiles():  Promise<any[]>{
-      const profile = await this.employerProfileModel.find();
-      return profile;
-   }
+  async getAllProfiles(): Promise<any[]> {
+    const profile = await this.employerProfileModel.find();
+    return profile;
+  }
 
-   async findOne(designation: string): Promise<any | null> {
-       return this.employerProfileModel.findOne({designation}).exec();
-   }
+  async findOne(designation: string): Promise<any | null> {
+    return this.employerProfileModel.findOne({ designation }).exec();
+  }
 
-   async deleteEmployerById(id: string): Promise<any | null> {
+  async deleteEmployerById(id: string): Promise<any | null> {
     return this.employerProfileModel.findByIdAndDelete(id).exec();
   }
 
@@ -38,6 +38,6 @@ export class EmployerProfileService{
   }
 
   async updateUserEmployerProfileByUserId(userId: string, employerprofileDto: EmployerProfileDto): Promise<any | null> {
-    return this.employerProfileModel.findOneAndUpdate({userId}, employerprofileDto, { new: true }).exec();
+    return this.employerProfileModel.findOneAndUpdate({ userId }, employerprofileDto, { new: true }).exec();
   }
 }
