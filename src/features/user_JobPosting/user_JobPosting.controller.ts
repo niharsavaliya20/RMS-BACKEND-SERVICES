@@ -1,6 +1,6 @@
-import { Body, Controller, Get, Post, Request, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put, Request, UseGuards } from "@nestjs/common";
 import { UserJobPostingService } from "./user_JobPosting.service";
-import { userJobPostingDto } from "src/Dto/user_JobPosting.Dto";
+import { UserJobPostingDto } from "src/Dto/user_JobPosting.Dto";
 import { AuthGuard } from "@nestjs/passport";
 
 @Controller('userJobList')
@@ -9,7 +9,7 @@ export class UserJobPostingController {
 
   @Post('/apply')   // new create post
   @UseGuards(AuthGuard("jwt"))
-  appliedJobPost(@Body() userJobPostingDto: userJobPostingDto, @Request() req): Promise<any> {
+  appliedJobPost(@Body() userJobPostingDto: UserJobPostingDto, @Request() req): Promise<any> {
     const Id: string = req.user._id
     return this.userJobPostingService.appliedJobPost(userJobPostingDto, Id);
   }
@@ -33,6 +33,16 @@ export class UserJobPostingController {
   async allApplicatns(@Request() req): Promise<any | null> {
     const Id: string = req.user.accountId
      return this.userJobPostingService.findAllApplicants(Id);
+  }
+
+  @Put('rejectApplicant/:id')
+  async updateRejectAppliedJobPostStatus(@Param('id') id: string): Promise<any | null> {
+    return this.userJobPostingService.updateRejectAppliedJobPostStatus(id);
+  }
+
+  @Put('approveApplicant/:id')
+  async updateApproveAppliedJobPostStatus(@Param('id') id: string): Promise<any | null> {
+    return this.userJobPostingService.updateAppliedJobPostStatus(id);
   }
 
 } 

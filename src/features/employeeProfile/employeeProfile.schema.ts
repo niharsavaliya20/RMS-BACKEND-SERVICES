@@ -15,10 +15,25 @@ export class employeeProfile extends Document {
   experience: string;
 
   @Prop()
+  currentSalary: string;
+
+  @Prop()
+  gender: string;
+
+  @Prop()
+  phoneNumber: string;
+
+  @Prop()
+  city: string;
+
+  @Prop()
+  state: string;
+
+  @Prop()
   address: string;
 
   @Prop()
-  salary: string;
+  profilePicture: string;
 
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
@@ -26,7 +41,6 @@ export class employeeProfile extends Document {
   })
   userId: User;
 }
-
 
 export const EmployeeProfileSchema = SchemaFactory.createForClass(employeeProfile);
 

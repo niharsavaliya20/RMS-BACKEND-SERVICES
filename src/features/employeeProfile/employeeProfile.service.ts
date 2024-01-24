@@ -11,8 +11,9 @@ export class EmployeeProfileService{
     constructor(@InjectModel('employeeProfile')
     private employeeProfileModel: Model<employeeProfile>){}
 
-    async getDetail( employeeprofileDto: EmployeeProfileDto): Promise<employeeProfile>  {
-        const profile = await this.employeeProfileModel.create(employeeprofileDto);
+    async createEmployeeProfile( employeeprofileDto: EmployeeProfileDto,Id): Promise<employeeProfile>  {
+      const { designation,profilePicture, experience, address, currentSalary, gender, phoneNumber,city ,state,userId} = employeeprofileDto;
+        const profile = await this.employeeProfileModel.create( {designation, experience, address, currentSalary, gender, phoneNumber,city ,state,userId: Id });
         return profile;
       }
 

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UseGuards, Param, Delete, Put } from "@nestjs/common";
+import { Controller, Get, Post, Body, UseGuards, Param, Delete, Put, Request } from "@nestjs/common";
 import { EmployeeProfileService } from "./employeeProfile.service";
 import { AuthGuard } from "@nestjs/passport";
 import { employeeProfile } from "./employeeProfile.schema";
@@ -9,8 +9,10 @@ export class EmployeeProfileController {
     constructor(private profileService: EmployeeProfileService) { }
 
     @Post('/create')    // new create post
-    getDetail(@Body() employeeprofileDto: EmployeeProfileDto): Promise<employeeProfile> {
-        return this.profileService.getDetail(employeeprofileDto);
+    @UseGuards(AuthGuard("jwt"))
+    createEmployeeProfile(@Request() req,@Body() employeeprofileDto: EmployeeProfileDto): Promise<employeeProfile> {
+        const Id: string = req.user._id
+        return this.profileService.createEmployeeProfile(employeeprofileDto,Id);
     }
 
     @Get('get/:id')

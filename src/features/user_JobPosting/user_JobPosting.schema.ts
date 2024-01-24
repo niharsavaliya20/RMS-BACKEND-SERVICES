@@ -22,7 +22,7 @@ export class UserJobPosting extends Document {
     ref: 'JobPosting',
   })
   jobPostingId: JobPosting;
-  
+
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'account',
@@ -30,11 +30,14 @@ export class UserJobPosting extends Document {
   @IsNotEmpty()
   accountId: Account;
 
-    @Prop()
-    status: string;
-  
-    @Prop()
-    applied: boolean;
-    
+  @Prop()
+  applicantStatus: string;
+
+  @Prop()
+  status: string;
+
+  @Prop()
+  applied: boolean;
+
 }
 export const UserJobPostingSchema = SchemaFactory.createForClass(UserJobPosting);

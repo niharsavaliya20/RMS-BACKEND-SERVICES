@@ -1,11 +1,14 @@
-import { IsArray, IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
-
 export class EmployeeProfileDto {
 
-    designation : String;
-    experience : String;
-    address : String;
-    salary : String;
-    userId : String
+    designation : string;
+    experience : string;
+    address : string;
+    currentSalary : string;
+    gender : string;
+    profilePicture : string;
+    phoneNumber : string;
+    city : string;
+    state : string;
+    userId : string;
 
 }
