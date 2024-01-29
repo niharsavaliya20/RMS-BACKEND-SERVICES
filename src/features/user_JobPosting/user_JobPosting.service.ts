@@ -97,7 +97,7 @@ export class UserJobPostingService {
           ],
 
           allApplicants: [
-            
+
             {
               $lookup: {
                 from: 'employeeprofiles', // Name of the collection to join
@@ -170,6 +170,110 @@ export class UserJobPostingService {
 
     ])
   }
+
+  async getApprovedApplicants(Id): Promise<any | null> {
+    const accountId = new ObjectId(Id);
+    return await this.UserjobPostingModel.aggregate([
+      {
+        $match: {
+          accountId: accountId,
+
+        }
+      },
+
+      {
+        $facet: {
+
+          approveApplicantCount: [
+            {
+              $match: {
+                applicantStatus: "approved"
+              }
+            },
+            { $count: "approveApplicantCount" }
+          ],
+
+          approvedApplicants: [
+            {
+              $match: {
+                applicantStatus: "approved"
+              }
+            },
+            {
+              $lookup: {
+                from: 'employeeprofiles', // Name of the collection to join
+                localField: 'userId',
+                foreignField: 'userId',
+                as: 'appliedUserProfile', // Alias for the joined documents
+              },
+            },
+            {
+              $lookup: {
+                from: 'users', // Name of the collection to join
+                localField: 'userId',
+                foreignField: '_id',
+                as: 'appliedUserDetail', // Alias for the joined documents
+              },
+            },
+          ],
+
+        },
+
+      }
+
+    ])
+  }
+
+  async getRejectedApplicants(Id): Promise<any | null> {
+    const accountId = new ObjectId(Id);
+    return await this.UserjobPostingModel.aggregate([
+      {
+        $match: {
+          accountId: accountId,
+
+        }
+      },
+
+      {
+        $facet: {
+          rejectedApplicantCount: [
+            {
+              $match: {
+                applicantStatus: "rejected"
+              }
+            },
+            { $count: "rejectedApplicantCount" }
+          ],
+          rejectedApplicants: [
+            {
+              $match: {
+                applicantStatus: "rejected"
+              }
+            },
+            {
+              $lookup: {
+                from: 'employeeprofiles', // Name of the collection to join
+                localField: 'userId',
+                foreignField: 'userId',
+                as: 'appliedUserProfile', // Alias for the joined documents
+              },
+            },
+            {
+              $lookup: {
+                from: 'users', // Name of the collection to join
+                localField: 'userId',
+                foreignField: '_id',
+                as: 'appliedUserDetail', // Alias for the joined documents
+              },
+            },
+          ]
+        },
+
+      }
+
+    ])
+  }
+
 
   async updateRejectAppliedJobPostStatus(id: string,): Promise<any | null> {
     const Rejected = "rejected";

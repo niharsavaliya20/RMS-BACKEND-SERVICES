@@ -35,6 +35,20 @@ export class UserJobPostingController {
      return this.userJobPostingService.findAllApplicants(Id);
   }
 
+  @Get('/getApprovedApplicants')
+  @UseGuards(AuthGuard("jwt"))
+  async getApprovedApplicatns(@Request() req): Promise<any | null> {
+    const Id: string = req.user.accountId
+     return this.userJobPostingService.getApprovedApplicants(Id);
+  }
+
+  @Get('/getRejectedApplicants')
+  @UseGuards(AuthGuard("jwt"))
+  async getRejectedApplicatns(@Request() req): Promise<any | null> {
+    const Id: string = req.user.accountId
+     return this.userJobPostingService.getRejectedApplicants(Id);
+  }
+
   @Put('rejectApplicant/:id')
   async updateRejectAppliedJobPostStatus(@Param('id') id: string): Promise<any | null> {
     return this.userJobPostingService.updateRejectAppliedJobPostStatus(id);

@@ -3,8 +3,8 @@ import { employerProfile } from 'src/features/employerProfile/employer.schema';
 // import { Profile } from './profile.interface';
 
 export interface UserInterface extends Document {
-    name: String,
-    email: String,
+    name: string,
+    email: string,
     password : String,
     loginType : String,
      role :[],
