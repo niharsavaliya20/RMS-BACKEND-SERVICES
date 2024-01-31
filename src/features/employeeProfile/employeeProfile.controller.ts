@@ -7,6 +7,11 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
 import { request } from "http";
 import * as fs from 'fs';
+import { promisify } from "util";
+import path from "path";
+
+const readdirAsync = promisify(fs.readdir);
+const unlinkAsync = promisify(fs.unlink);
 
 interface UserInterface {
   _id: string,
@@ -28,18 +33,15 @@ export class EmployeeProfileController {
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
       destination: (req, file, callback) => {
-        // const username = (req.user as UserInterface).name;
-        const userId = (req.user as UserInterface)._id;
+
+        const userId = (req.user as UserInterface)._id;    // @ get req _id from user
         const uploadPath = `./uploads/${userId}`;
         if (!fs.existsSync(uploadPath)) {
           fs.mkdirSync(uploadPath, { recursive: true });
         }
         callback(null, `${uploadPath}`);
-        console.log("..........",req.user);
-        console.log("file name...",file)
       },
       filename: (req, file, callback) => {
-        const userId = (req.user as UserInterface)._id;
         callback(null, `${file.originalname}`);
       },
     }),
@@ -50,44 +52,11 @@ export class EmployeeProfileController {
     @UploadedFile() file: Express.Multer.File,
   ): Promise<employeeProfile> {
     const userId: string = req.user._id;
+
     employeeprofileDto.profilePicture = `${file.filename}`;
     console.log("......console", employeeprofileDto.profilePicture);
     return this.profileService.createEmployeeProfile(employeeprofileDto, userId);
   }
-
-  // const originalname = file.originalname;
-  // const prefixedFilename = `${originalname}`;
-
-  // @Post('/create')
-  // @UseGuards(AuthGuard("jwt"))
-  // @UseInterceptors(FileInterceptor( 'file',{
-  //     storage: diskStorage({
-  //         destination: './uploads', // Set the destination folder for uploaded images
-  //         filename: (req, file, callback) => {
-  //              console.log("req.???????.....",(req.user as UserInterface).name)
-  //             callback(null, `${file.originalname}`);
-  //         },
-  //     }),
-  // }))
-  // createEmployeeProfile(@Request() req, @Body() employeeprofileDto: EmployeeProfileDto, @UploadedFile() file: Express.Multer.File): Promise<employeeProfile> {
-  //     const Id: string = req.user._id;
-  //     employeeprofileDto.profilePicture = file.originalname;
-  //     console.log("......",file.originalname)
-  //     return this.profileService.createEmployeeProfile(employeeprofileDto, Id);
-  // }
-
-  //    async uploadFile(@UploadedFile() file: Express.Multer.File){
-  //     console.log(" in upload file......",file)
-
-  //   }
-
-
-  // @Post('/create')    // new create post
-  // @UseGuards(AuthGuard("jwt"))
-  // createEmployeeProfile(@Request() req,@Body() employeeprofileDto: EmployeeProfileDto): Promise<employeeProfile> {
-  //     const Id: string = req.user._id
-  //     return this.profileService.createEmployeeProfile(employeeprofileDto,Id);
-  // }
 
   @Get('get/:id')
   async findById(@Param('id') id: string): Promise<employeeProfile | null> {
@@ -111,7 +80,59 @@ export class EmployeeProfileController {
   }
 
   @Put('update/profile/:userId')
-  async updateEmployeeProfileByUserId(@Param('userId') userId: string, @Body() employeeprofileDto: EmployeeProfileDto): Promise<any | null> {
+  @UseGuards(AuthGuard("jwt"))
+  @UseInterceptors(FileInterceptor('file', {
+    storage: diskStorage({
+      destination: (req, file, callback) => {
+
+        const userId = (req.user as UserInterface)._id;    // @ get req _id from user
+        const uploadPath = `./uploads/${userId}`;
+
+        const oldFilePath = `./uploads/${userId}`;
+
+        if (!fs.existsSync(uploadPath)) {
+          fs.mkdirSync(uploadPath, { recursive: true });
+        }
+
+        callback(null, `${uploadPath}`);
+      },
+      filename: (req, file, callback) => {
+        callback(null, `${file.originalname}`);
+      },
+    }),
+  }))
+  async updateEmployeeProfileByUserId(@Param('userId') userId: string,
+    @Body() employeeprofileDto: EmployeeProfileDto,
+    @UploadedFile() file: Express.Multer.File): Promise<any | null> {
+    const existingProfile = await this.profileService.getUserEmployeeProfileByUserId(userId);
+
+    const oldFilePath = `./uploads/${userId}/${existingProfile.profilePicture}`  // all file path
+
+    if (file) {
+
+      const allfile = fs.existsSync(oldFilePath)  // get true or false
+      console.log("all files .............???", allfile)
+
+      if (fs.existsSync(oldFilePath)) {
+        console.log()
+        fs.unlinkSync(oldFilePath);
+      }
+
+      employeeprofileDto.profilePicture = `${file.filename}`;
+    }
+
     return this.profileService.updateUserEmployeeProfileByUserId(userId, employeeprofileDto);
   }
 }
+
+
+
+
+
+
+// async updateEmployeeProfileByUserId(@Param('userId') userId: string,
+//    @Body() employeeprofileDto: EmployeeProfileDto,
+//    @UploadedFile() file: Express.Multer.File,): Promise<any | null> {
+//     employeeprofileDto.profilePicture = `${file.filename}`;
+//     return this.profileService.updateUserEmployeeProfileByUserId(userId, employeeprofileDto);
+//   }

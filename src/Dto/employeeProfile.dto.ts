@@ -5,10 +5,12 @@ export class EmployeeProfileDto {
     address : string;
     currentSalary : string;
     gender : string;
-    profilePicture : string;
+    profilePicture: string
     phoneNumber : string;
     city : string;
     state : string;
     userId : string;
+  static profilePicture: any;
+//   static originalFilename: any;
 
 }

@@ -38,5 +38,9 @@ export class EmployeeProfileService{
     return this.employeeProfileModel.findOneAndUpdate({userId}, employeeprofileDto, { new: true }).exec();
   }
 
+  async getUserEmployeeProfileByUserId(userId: string): Promise<employeeProfile | null> {
+    return this.employeeProfileModel.findOne({userId}).exec();
+  }
+
    
 }
