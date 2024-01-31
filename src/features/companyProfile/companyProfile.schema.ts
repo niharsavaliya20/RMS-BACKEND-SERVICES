@@ -31,6 +31,12 @@ export class CompanyProfile extends Document {
   @Prop()
   location: string;
 
+  @Prop()
+  address: string;
+
+  @Prop()
+  profilePicture: string;
+
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'account',

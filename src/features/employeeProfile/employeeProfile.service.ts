@@ -42,5 +42,4 @@ export class EmployeeProfileService{
     return this.employeeProfileModel.findOne({userId}).exec();
   }
 
-   
 }

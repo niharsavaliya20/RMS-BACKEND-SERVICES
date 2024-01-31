@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Request, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put, Query, Request, UseGuards } from "@nestjs/common";
 import { UserJobPostingService } from "./user_JobPosting.service";
 import { UserJobPostingDto } from "src/Dto/user_JobPosting.Dto";
 import { AuthGuard } from "@nestjs/passport";
@@ -30,23 +30,10 @@ export class UserJobPostingController {
 
   @Get('/applicatns')
   @UseGuards(AuthGuard("jwt"))
-  async allApplicatns(@Request() req): Promise<any | null> {
+  async allApplicatns(@Request() req , @Query('applicantStatus') applicantStatus : string ): Promise<any | null> {
     const Id: string = req.user.accountId
-     return this.userJobPostingService.findAllApplicants(Id);
-  }
-
-  @Get('/getApprovedApplicants')
-  @UseGuards(AuthGuard("jwt"))
-  async getApprovedApplicatns(@Request() req): Promise<any | null> {
-    const Id: string = req.user.accountId
-     return this.userJobPostingService.getApprovedApplicants(Id);
-  }
-
-  @Get('/getRejectedApplicants')
-  @UseGuards(AuthGuard("jwt"))
-  async getRejectedApplicatns(@Request() req): Promise<any | null> {
-    const Id: string = req.user.accountId
-     return this.userJobPostingService.getRejectedApplicants(Id);
+    console.log("parammmmmmmmmmmmmmm ",applicantStatus);
+     return this.userJobPostingService.findAllApplicants(Id, applicantStatus);
   }
 
   @Put('rejectApplicant/:id')

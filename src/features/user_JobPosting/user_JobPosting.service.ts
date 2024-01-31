@@ -27,20 +27,6 @@ export class UserJobPostingService {
     return post;
   }
 
-  // async findJobPosting(jobPostingId: string, userId: string): Promise<any | null> {
-  //   const jobPostingObjectId = new ObjectId(jobPostingId);
-  //   return this.UserjobPostingModel.aggregate([
-  //     {
-  //       $match: {
-  //         $and: [
-  //           { jobPostingId: jobPostingObjectId }, // Ensures jobPostingId is not empty
-  //           { userId: userId }         // Ensures userId is not empty
-  //         ]
-  //       }
-  //     }
-  //   ])
-  // }
-
   async findJobPostingId(userId: string): Promise<any | null> {
 
     const data = await this.UserjobPostingModel.aggregate([
@@ -61,8 +47,19 @@ export class UserJobPostingService {
     return list;
   }
 
-  async findAllApplicants(Id): Promise<any | null> {
+  async findAllApplicants(Id, applicantStatus): Promise<any | null> {
     const accountId = new ObjectId(Id);
+    const appliedStatus = applicantStatus == "total" ? {
+        
+          applicantStatus:{
+            $in:["approved","rejected"]
+          }
+       
+      } : {
+     
+        applicantStatus: applicantStatus
+  
+    };
     return await this.UserjobPostingModel.aggregate([
       {
         $match: {
@@ -97,107 +94,8 @@ export class UserJobPostingService {
           ],
 
           allApplicants: [
-
             {
-              $lookup: {
-                from: 'employeeprofiles', // Name of the collection to join
-                localField: 'userId',
-                foreignField: 'userId',
-                as: 'appliedUserProfile', // Alias for the joined documents
-              },
-            },
-            {
-              $lookup: {
-                from: 'users', // Name of the collection to join
-                localField: 'userId',
-                foreignField: '_id',
-                as: 'appliedUserDetail', // Alias for the joined documents
-              },
-            },
-          ],
-
-          approvedApplicants: [
-            {
-              $match: {
-                applicantStatus: "approved"
-              }
-            },
-            {
-              $lookup: {
-                from: 'employeeprofiles', // Name of the collection to join
-                localField: 'userId',
-                foreignField: 'userId',
-                as: 'appliedUserProfile', // Alias for the joined documents
-              },
-            },
-            {
-              $lookup: {
-                from: 'users', // Name of the collection to join
-                localField: 'userId',
-                foreignField: '_id',
-                as: 'appliedUserDetail', // Alias for the joined documents
-              },
-            },
-          ],
-
-          rejectedApplicants: [
-            {
-              $match: {
-                applicantStatus: "rejected"
-              }
-            },
-            {
-              $lookup: {
-                from: 'employeeprofiles', // Name of the collection to join
-                localField: 'userId',
-                foreignField: 'userId',
-                as: 'appliedUserProfile', // Alias for the joined documents
-              },
-            },
-            {
-              $lookup: {
-                from: 'users', // Name of the collection to join
-                localField: 'userId',
-                foreignField: '_id',
-                as: 'appliedUserDetail', // Alias for the joined documents
-              },
-            },
-          ]
-
-        },
-
-      }
-
-    ])
-  }
-
-  async getApprovedApplicants(Id): Promise<any | null> {
-    const accountId = new ObjectId(Id);
-    return await this.UserjobPostingModel.aggregate([
-      {
-        $match: {
-          accountId: accountId,
-
-        }
-      },
-
-      {
-        $facet: {
-
-          approveApplicantCount: [
-            {
-              $match: {
-                applicantStatus: "approved"
-              }
-            },
-            { $count: "approveApplicantCount" }
-          ],
-
-          approvedApplicants: [
-            {
-              $match: {
-                applicantStatus: "approved"
-              }
+              $match : appliedStatus
             },
             {
               $lookup: {
@@ -223,57 +121,6 @@ export class UserJobPostingService {
 
     ])
   }
-
-  async getRejectedApplicants(Id): Promise<any | null> {
-    const accountId = new ObjectId(Id);
-    return await this.UserjobPostingModel.aggregate([
-      {
-        $match: {
-          accountId: accountId,
-
-        }
-      },
-
-      {
-        $facet: {
-          rejectedApplicantCount: [
-            {
-              $match: {
-                applicantStatus: "rejected"
-              }
-            },
-            { $count: "rejectedApplicantCount" }
-          ],
-          rejectedApplicants: [
-            {
-              $match: {
-                applicantStatus: "rejected"
-              }
-            },
-            {
-              $lookup: {
-                from: 'employeeprofiles', // Name of the collection to join
-                localField: 'userId',
-                foreignField: 'userId',
-                as: 'appliedUserProfile', // Alias for the joined documents
-              },
-            },
-            {
-              $lookup: {
-                from: 'users', // Name of the collection to join
-                localField: 'userId',
-                foreignField: '_id',
-                as: 'appliedUserDetail', // Alias for the joined documents
-              },
-            },
-          ]
-        },
-
-      }
-
-    ])
-  }
-
 
   async updateRejectAppliedJobPostStatus(id: string,): Promise<any | null> {
     const Rejected = "rejected";

@@ -1,5 +1,5 @@
-export class CompanyProfileDto {
-   
+export interface CompanyProfile {
+
     industry: string;
     companySize: string;
     foundedIn: string; 
@@ -7,8 +7,7 @@ export class CompanyProfileDto {
     email: string;
     location: string;
     accountId : string;
-    aboutCompany :string;
-    profilePicture: string;
+    aboutCompany :string
     address : string
 
 }
