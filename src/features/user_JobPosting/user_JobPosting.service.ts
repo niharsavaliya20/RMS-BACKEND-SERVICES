@@ -52,7 +52,7 @@ export class UserJobPostingService {
     const appliedStatus = applicantStatus == "total" ? {
 
       applicantStatus: {
-        $in: ["approved", "rejected"]
+        $in: ["Approved", "Rejected"]
       }
 
     } : {
@@ -78,7 +78,7 @@ export class UserJobPostingService {
           rejectedApplicantCount: [
             {
               $match: {
-                applicantStatus: "rejected"
+                applicantStatus: "Rejected"
               }
             },
             { $count: "rejectedApplicantCount" }
@@ -87,7 +87,7 @@ export class UserJobPostingService {
           approveApplicantCount: [
             {
               $match: {
-                applicantStatus: "approved"
+                applicantStatus: "Approved"
               }
             },
             { $count: "approveApplicantCount" }
@@ -123,12 +123,12 @@ export class UserJobPostingService {
   }
 
   async updateRejectAppliedJobPostStatus(id: string,): Promise<any | null> {
-    const Rejected = "rejected";
+    const Rejected = "Rejected";
     return this.UserjobPostingModel.findByIdAndUpdate(id, { applicantStatus: Rejected }, { new: true }).exec();
   }
 
   async updateAppliedJobPostStatus(id: string,): Promise<any | null> {
-    const Approve = "approved";
+    const Approve = "Approved";
     return this.UserjobPostingModel.findByIdAndUpdate(id, { applicantStatus: Approve }, { new: true }).exec();
   }
 
