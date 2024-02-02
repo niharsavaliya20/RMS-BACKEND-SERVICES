@@ -88,8 +88,6 @@ export class EmployeeProfileController {
         const userId = (req.user as UserInterface)._id;    // @ get req _id from user
         const uploadPath = `./uploads/${userId}`;
 
-        const oldFilePath = `./uploads/${userId}`;
-
         if (!fs.existsSync(uploadPath)) {
           fs.mkdirSync(uploadPath, { recursive: true });
         }

@@ -26,6 +26,9 @@ export class CompanyProfile extends Document {
   phone: string;
 
   @Prop()
+  country: string;
+
+  @Prop()
   email: string;
 
   @Prop()

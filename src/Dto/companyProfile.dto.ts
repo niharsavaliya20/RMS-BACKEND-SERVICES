@@ -9,6 +9,7 @@ export class CompanyProfileDto {
     accountId : string;
     aboutCompany :string;
     profilePicture: string;
-    address : string
+    address : string;
+    country : string;
 
 }

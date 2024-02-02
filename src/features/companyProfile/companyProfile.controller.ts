@@ -18,7 +18,7 @@ export class CompanyProfileController {
             destination: (req, file, callback) => {
 
                 const accountId = (req.user as CompanyProfile).accountId;    // @ get req _id from user
-                const uploadPath = `./componayProfilePicture/${accountId}`;
+                const uploadPath = `./companyProfilePicture/${accountId}`;
                 if (!fs.existsSync(uploadPath)) {
                     fs.mkdirSync(uploadPath, { recursive: true });
                 }
@@ -43,14 +43,27 @@ export class CompanyProfileController {
         return this.companyProfileService.findCompanyProfile(accountId)
     }
 
-    @Put('updateCompanyProfile/:accountId')
+    @Get('getEmployerCompanyProfile')
+    @UseGuards(AuthGuard("jwt"))
+    async getEmployerCompanyProfile(@Request() req): Promise<any | null> {
+        const accountId: string = req.user.accountId
+        return this.companyProfileService.getEmployerCompanyProfile(accountId)
+    }
+
+    @Get('companyDetailById/:id')
+    @UseGuards(AuthGuard("jwt"))
+    async findCompanyProfileById(@Param('id') id: string): Promise<any | null> {
+        return this.companyProfileService.findCompanyProfileById(id)
+    }
+
+    @Put('updateCompanyProfile')
     @UseGuards(AuthGuard("jwt"))
     @UseInterceptors(FileInterceptor('file', {
         storage: diskStorage({
             destination: (req, file, callback) => {
 
                 const accountId = (req.user as CompanyProfile).accountId;    // @ get req _id from user
-                const uploadPath = `./uploads/${accountId}`;
+                const uploadPath = `./companyProfilePicture/${accountId}`;
 
                 if (!fs.existsSync(uploadPath)) {
                     fs.mkdirSync(uploadPath, { recursive: true });
@@ -63,13 +76,14 @@ export class CompanyProfileController {
             },
         }),
     }))
-    async updateCompanyProfileById(@Param('accountId') accountId: string,
+    async updateCompanyProfileById(@Request() req,
         @Body() companyProfileDto: CompanyProfileDto,
         @UploadedFile() file: Express.Multer.File): Promise<any | null> {
+        const accountId = req.user.accountId
         const existingProfile = await this.companyProfileService.getCompanyProfileByAccountId(accountId);
-
-        const oldFilePath = `./uploads/${accountId}/${existingProfile.profilePicture}`  // all file path
-
+        console.log("??????????????????",existingProfile)
+        const oldFilePath = `./companyProfilePicture/${accountId}/${existingProfile.profilePicture}`  // all file path
+        console.log("all details....",oldFilePath)
         if (file) {
 
             const allfile = fs.existsSync(oldFilePath)  // get true or false

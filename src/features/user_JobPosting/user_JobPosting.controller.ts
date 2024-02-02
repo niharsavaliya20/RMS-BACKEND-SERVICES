@@ -46,4 +46,12 @@ export class UserJobPostingController {
     return this.userJobPostingService.updateAppliedJobPostStatus(id);
   }
 
+  @Get('/applicantDetail/:id')
+  // @UseGuards(AuthGuard("jwt"))
+  async applicantDetail(@Param('id') id : string ): Promise<any | null> {
+    // const Id: string = req.user.accountId
+    // console.log("parammmmmmmmmmmmmmm ",applicantStatus);
+     return this.userJobPostingService.applicantDetail(id);
+  }
+
 } 

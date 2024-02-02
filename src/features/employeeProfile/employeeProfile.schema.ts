@@ -18,6 +18,9 @@ export class employeeProfile extends Document {
   currentSalary: string;
 
   @Prop()
+  expectedSalary: string;
+
+  @Prop()
   gender: string;
 
   @Prop()

@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 import { UserJobPosting } from "./user_JobPosting.schema";
 import { UserJobPostingDto } from "src/Dto/user_JobPosting.Dto";
 import { Status } from "src/constants/status";
@@ -50,15 +50,15 @@ export class UserJobPostingService {
   async findAllApplicants(Id, applicantStatus): Promise<any | null> {
     const accountId = new ObjectId(Id);
     const appliedStatus = applicantStatus == "total" ? {
-        
-          applicantStatus:{
-            $in:["approved","rejected"]
-          }
-       
-      } : {
-     
-        applicantStatus: applicantStatus
-  
+
+      applicantStatus: {
+        $in: ["approved", "rejected"]
+      }
+
+    } : {
+
+      applicantStatus: applicantStatus
+
     };
     return await this.UserjobPostingModel.aggregate([
       {
@@ -95,7 +95,7 @@ export class UserJobPostingService {
 
           allApplicants: [
             {
-              $match : appliedStatus
+              $match: appliedStatus
             },
             {
               $lookup: {
@@ -130,6 +130,45 @@ export class UserJobPostingService {
   async updateAppliedJobPostStatus(id: string,): Promise<any | null> {
     const Approve = "approved";
     return this.UserjobPostingModel.findByIdAndUpdate(id, { applicantStatus: Approve }, { new: true }).exec();
+  }
+
+  async applicantDetail(id): Promise<any | null> {
+    // const accountId = new ObjectId(Id);
+    // const appliedStatus = applicantStatus == "total" ? {
+
+    //       applicantStatus:{
+    //         $in:["approved","rejected"]
+    //       }
+
+    //   } : {
+
+    //     applicantStatus: applicantStatus
+
+    // };
+    return await this.UserjobPostingModel.aggregate([
+      {
+        $match :{
+          _id: new Types.ObjectId(id)
+        }
+      },
+      {
+        $lookup: {
+          from: 'employeeprofiles', // Name of the collection to join
+          localField: 'userId',
+          foreignField: 'userId',
+          as: 'appliedUserProfile', // Alias for the joined documents
+        },
+      },
+      {
+        $lookup: {
+          from: 'users', // Name of the collection to join
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'appliedUserDetail', // Alias for the joined documents
+        },
+      },
+    ],
+    )
   }
 
 }
