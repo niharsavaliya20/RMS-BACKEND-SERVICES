@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Query, Request, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Patch, Post, Put, Query, Request, UseGuards } from "@nestjs/common";
 import { UserJobPostingService } from "./user_JobPosting.service";
 import { UserJobPostingDto } from "src/Dto/user_JobPosting.Dto";
 import { AuthGuard } from "@nestjs/passport";
@@ -30,21 +30,28 @@ export class UserJobPostingController {
 
   @Get('/applicatns')
   @UseGuards(AuthGuard("jwt"))
-  async allApplicatns(@Request() req , @Query('applicantStatus') applicantStatus : string ): Promise<any | null> {
+  async allApplicatns(@Request() req , @Query('applicantStatus') applicantStatus : number ): Promise<any | null> {
     const Id: string = req.user.accountId
     console.log("parammmmmmmmmmmmmmm ",applicantStatus);
      return this.userJobPostingService.findAllApplicants(Id, applicantStatus);
   }
 
-  @Put('rejectApplicant/:id')
-  async updateRejectAppliedJobPostStatus(@Param('id') id: string): Promise<any | null> {
-    return this.userJobPostingService.updateRejectAppliedJobPostStatus(id);
+  // @Patch('rejectApplicant/:id')
+  // async updateRejectAppliedJobPostStatus(@Param('id') id: string, @Query('statusId') statusId : number): Promise<any | null> {
+  //   return this.userJobPostingService.updateRejectAppliedJobPostStatus(id, statusId);
+  // }
+
+  @Patch('approveApplicant/:id')
+  async updateApproveAppliedJobPostStatus(@Param('id') id: string,@Body('statusId') statusId : number): Promise<any | null> {
+    console.log("approvvvvvvvvvvvvvvvvvvvvvvvv",statusId)
+    return this.userJobPostingService.updateAppliedJobPostStatus(id,statusId);
   }
 
-  @Put('approveApplicant/:id')
-  async updateApproveAppliedJobPostStatus(@Param('id') id: string): Promise<any | null> {
-    return this.userJobPostingService.updateAppliedJobPostStatus(id);
-  }
+  // @Patch('OnHoldApplicant/:id')
+  // async updateOnHoldAppliedJobPostStatus(@Param('id') id: string, @Query('statusId') statusId : number = 3): Promise<any | null> {
+  //   console.log("apliStatusssssssssss",statusId)
+  //   return this.userJobPostingService.updateOnHoldAppliedJobPostStatus(id,statusId);
+  // }
 
   @Get('/applicantDetail/:id')
   // @UseGuards(AuthGuard("jwt"))
