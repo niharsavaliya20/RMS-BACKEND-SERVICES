@@ -15,7 +15,7 @@ import { UserJobPostingModule } from './features/user_JobPosting/user_JobPosting
 import { CompanyProfileModule } from './features/companyProfile/companyProfile.module';
 import { Employer_StatusModule } from './features/employer_status/employer_status.module';
 import { Employee_StatusModule } from './features/employee_status/employee_status.module';
-
+import { SkillModule } from './features/skill/skill.module';
 
 @Module({
   imports: [
@@ -29,6 +29,7 @@ import { Employee_StatusModule } from './features/employee_status/employee_statu
     CompanyProfileModule,
     Employer_StatusModule,
     Employee_StatusModule,
+    SkillModule,
     ConfigModule.forRoot(),
     // MongoConfigModule,
     // MongoDatabaseProviderModule,

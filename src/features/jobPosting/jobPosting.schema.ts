@@ -35,7 +35,7 @@ export class JobPosting extends Document {
   jobDescription: string;
   
   @Prop()
-  skill: string;
+  skill: [];
 
   @Prop()
   salary: string;

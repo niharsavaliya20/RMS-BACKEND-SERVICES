@@ -10,7 +10,7 @@ export class JobPostingDto {
     expectedSalary: String;
     maxSalary: String;
     jobDescription: String;
-    skill: String;
+    skill: [];
     minExp: String;
     maxExp: String;
     jobType: String;
