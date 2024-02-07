@@ -4,6 +4,7 @@ import { Model, Types } from "mongoose";
 import { JobPostingDto } from "src/Dto/jobPosting.dto";
 import { JobPosting, JobPostingSchema } from "./jobPosting.schema";
 import { Status } from "src/constants/status";
+const { ObjectId } = require('mongodb');
 import moment from "moment-timezone";
 import { jwtConstants } from "src/constants/constant";
 import * as jwt from 'jsonwebtoken';
@@ -152,6 +153,26 @@ export class JobPostingService {
     const activate = "active";
     const date =  new Date();
     return this.jobPostingModel.findByIdAndUpdate(id, updateUserDto, { status: activate, new: true,updatedAt:date }).exec();
+  }
+
+  async getJobListBYAccountId(accountId: string): Promise<any | null> {
+    const Id = new ObjectId(accountId);
+    return this.jobPostingModel.aggregate([
+      {
+        $match : {
+            accountId : Id
+        }
+      },
+      {
+        $lookup: {
+          from: 'companyprofiles', // Name of the collection to join
+          localField: 'accountId',
+          foreignField: 'accountId',
+          as: 'companyDetails', // Alias for the joined documents
+        },
+      },
+
+    ])
   }
 
 }

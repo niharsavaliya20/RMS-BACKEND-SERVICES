@@ -11,6 +11,7 @@ export class EmployeeProfileDto {
     city : string;
     state : string;
     userId : string;
+    skill : []
   static profilePicture: any;
 //   static originalFilename: any;
 

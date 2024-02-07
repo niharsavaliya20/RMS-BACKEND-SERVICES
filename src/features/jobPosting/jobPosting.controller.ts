@@ -53,4 +53,12 @@ export class JobPostingController {
     return this.jobPostingService.updateJobPostingById(id, updateUserDto);
   }
 
+  @Get('getJobListBYAccountId')
+  @UseGuards(AuthGuard("jwt"))
+  async getJobListBYAccountId(@Request() req) {
+    const accountId = req.user.accountId
+    const totalCount = await this.jobPostingService.getJobListBYAccountId(accountId);
+    return totalCount;
+  }
+
 }

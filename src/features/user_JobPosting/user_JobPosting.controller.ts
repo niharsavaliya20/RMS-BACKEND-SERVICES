@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Patch, Post, Put, Query, Request, UseGuar
 import { UserJobPostingService } from "./user_JobPosting.service";
 import { UserJobPostingDto } from "src/Dto/user_JobPosting.Dto";
 import { AuthGuard } from "@nestjs/passport";
+import { JobPosting } from "../jobPosting/jobPosting.schema";
 
 @Controller('userJobList')
 export class UserJobPostingController {
@@ -28,12 +29,13 @@ export class UserJobPostingController {
     return this.userJobPostingService.findJobPostingId(userId);
   }
 
-  @Get('/applicatns')
+  @Get('/applicatns/:jobPostingId')
   @UseGuards(AuthGuard("jwt"))
-  async allApplicatns(@Request() req , @Query('applicantStatus') applicantStatus : number ): Promise<any | null> {
+  async allApplicatns(@Request() req , @Query('applicantStatus') applicantStatus : number,@Param('jobPostingId') jobPostingId: string ): Promise<any | null> {
     const Id: string = req.user.accountId
     console.log("parammmmmmmmmmmmmmm ",applicantStatus);
-     return this.userJobPostingService.findAllApplicants(Id, applicantStatus);
+    console.log("gggggggggggggggggggggg",jobPostingId)
+     return this.userJobPostingService.findAllApplicants(Id, applicantStatus,jobPostingId);
   }
 
   // @Patch('rejectApplicant/:id')

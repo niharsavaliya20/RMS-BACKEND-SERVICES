@@ -33,6 +33,9 @@ export class employeeProfile extends Document {
   state: string;
 
   @Prop()
+  skill: [];
+
+  @Prop()
   address: string;
 
   @Prop()

@@ -47,9 +47,10 @@ export class UserJobPostingService {
     return list;
   }
 
-  async findAllApplicants(Id, applicantStatus): Promise<any | null> {
-    const accountId = new ObjectId(Id);
-    console.log("..........fbgrbt.",applicantStatus)
+  async findAllApplicants(Id, applicantStatus,JobId): Promise<any | null> {
+     console.log("llllllllllllllllllllllllllllllll",jobPostingId)
+    const jobPostingId = new ObjectId(JobId);
+   
     const appliedStatus = applicantStatus == 6 ? 
     {
       applicantStatus: {$in : [1,2,3,4,5,6]}
@@ -60,8 +61,7 @@ export class UserJobPostingService {
     return await this.UserjobPostingModel.aggregate([
       {
         $match: {
-          accountId: accountId,
-
+          jobPostingId: jobPostingId,
         }
       },
 
@@ -119,34 +119,14 @@ export class UserJobPostingService {
     ])
   }
 
-  // async updateRejectAppliedJobPostStatus(id: string, statusId): Promise<any | null> {
-
-  //   return this.UserjobPostingModel.findByIdAndUpdate(id, { applicantStatus: statusId }, { new: true }).exec();
-  // }
-
   async updateAppliedJobPostStatus(id: string, statusId): Promise<any | null> {
     console.log("<,,,,,,,,,,,,,approve", statusId)
     return this.UserjobPostingModel.findByIdAndUpdate(id, { applicantStatus: statusId }, { new: true }).exec();
   }
 
-  // async updateOnHoldAppliedJobPostStatus(id: string, statusId): Promise<any | null> {
-  //   console.log("<,,,,,,,,,,,,,", statusId)
-  //   return this.UserjobPostingModel.findByIdAndUpdate(id, { applicantStatus: statusId }, { new: true }).exec();
-  // }
 
   async applicantDetail(id): Promise<any | null> {
-    // const accountId = new ObjectId(Id);
-    // const appliedStatus = applicantStatus == "total" ? {
-
-    //       applicantStatus:{
-    //         $in:["approved","rejected"]
-    //       }
-
-    //   } : {
-
-    //     applicantStatus: applicantStatus
-
-    // };
+  
     return await this.UserjobPostingModel.aggregate([
       {
         $match: {
