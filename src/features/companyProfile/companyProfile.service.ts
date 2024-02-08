@@ -13,9 +13,9 @@ export class CompanyProfileService{
 
     async createCompanyProfile( CompanyProfileDto: CompanyProfileDto,Id): Promise<any>  {
         // const { email, status}= accountDto;
-       const{aboutCompany,profilePicture,country ,companySize, foundedIn, email,address,phone, location} = CompanyProfileDto
+       const{aboutCompany,profilePicture,country ,companySize, foundedIn, email,address, state, phone, location} = CompanyProfileDto
         
-        const companyProfile = await this.companyProfileModel.create({aboutCompany,address,country, companySize, profilePicture,foundedIn, email, phone, location,accountId : Id});
+        const companyProfile = await this.companyProfileModel.create({aboutCompany,address,country, companySize, profilePicture,state, foundedIn, email, phone, location,accountId : Id});
         return companyProfile;
       }
 

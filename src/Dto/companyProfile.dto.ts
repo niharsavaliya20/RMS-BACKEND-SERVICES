@@ -11,5 +11,6 @@ export class CompanyProfileDto {
     profilePicture: string;
     address : string;
     country : string;
+    state : string;
 
 }
