@@ -35,7 +35,7 @@ export class EmployeeProfileService{
   }
 
   async updateUserEmployeeProfileByUserId(userId: string, employeeprofileDto: EmployeeProfileDto): Promise<any | null> {
-    return this.employeeProfileModel.findOneAndUpdate({userId}, employeeprofileDto, { new: true }).exec();
+    return this.employeeProfileModel.findOneAndUpdate({userId}, {...employeeprofileDto,skill:employeeprofileDto.skill.split(",")}, { new: true }).exec();
   }
 
   async getUserEmployeeProfileByUserId(userId: string): Promise<employeeProfile | null> {

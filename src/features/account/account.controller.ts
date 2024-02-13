@@ -8,7 +8,6 @@ export class AccountController {
     constructor(private accountService: AccountService) { }
 
     @Post('/create')   // new create post
-    @UseGuards(AuthGuard("jwt"))
     createAccount(@Body() accountDto: AccountDto): Promise<any> {
         return this.accountService.createAccount(accountDto);
     }
