@@ -47,14 +47,14 @@ export class UserJobPostingService {
     return list;
   }
 
-  async findAllApplicants(Id, applicantStatus,JobId): Promise<any | null> {
-     console.log("llllllllllllllllllllllllllllllll",jobPostingId)
+  async findAllApplicants(Id, applicantStatus, JobId): Promise<any | null> {
+
     const jobPostingId = new ObjectId(JobId);
-   
-    const appliedStatus = applicantStatus == 6 ? 
-    {
-      applicantStatus: {$in : [1,2,3,4,5,6]}
-    } :
+
+    const appliedStatus = applicantStatus == 6 ?
+      {
+        applicantStatus: { $in: [1, 2, 3, 4, 5, 6] }
+      } :
       {
         applicantStatus: Number(applicantStatus)
       };
@@ -126,7 +126,7 @@ export class UserJobPostingService {
 
 
   async applicantDetail(id): Promise<any | null> {
-  
+
     return await this.UserjobPostingModel.aggregate([
       {
         $match: {

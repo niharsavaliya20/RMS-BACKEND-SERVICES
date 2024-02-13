@@ -24,10 +24,6 @@ export class AccountService{
         return account;
       }
 
-    // async findAccountById(id: string): Promise<any | null> {
-    //     return (await this.accountModel.findById(id));
-    //   }
-
     async findAccountById(id: string): Promise<any | null> {
       return (await this.accountModel.aggregate([
         {

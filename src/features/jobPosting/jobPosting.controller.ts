@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UseGuards, Param, Delete, Put, Query, ParseIntPipe, Headers, Request } from "@nestjs/common";
+import { Controller, Get, Post, Body, UseGuards, Param, Delete, Put, Query, ParseIntPipe, Headers, Request, HttpStatus } from "@nestjs/common";
 import { JobPostingService } from "./jobPosting.service";
 import { JobPostingDto } from "src/Dto/jobPosting.dto";
 import { AuthGuard } from "@nestjs/passport";
@@ -30,25 +30,33 @@ export class JobPostingController {
   }
 
   @Get('jobList/all')
-  // @UseGuards(AuthGuard("jwt"))
+  @UseGuards(AuthGuard("jwt"))
   async getAllJobList(@Query('page') page: number = 1,
   @Query('limit', ParseIntPipe) limit: number = 10,): Promise<any> {
     return this.jobPostingService.getAllJobList(page,limit);
   }
 
   @Get('total')
+  @UseGuards(AuthGuard("jwt"))
   async getTotalCount() {
     const totalCount = await this.jobPostingService.getTotalCount();
     return totalCount;
   }
 
-
   @Put('delete/:id')  // deactive user
+  @UseGuards(AuthGuard("jwt"))
   async deActivatePostById(@Param('id') id: string): Promise<any | null> {
-    return this.jobPostingService.deActivatePostById(id);
+    if(id){
+      return this.jobPostingService.deActivatePostById(id);
+    }
+    return {
+      code: HttpStatus.BAD_REQUEST,
+      message: "id is require"
+  }
   }
 
   @Put('update/:id')
+  @UseGuards(AuthGuard("jwt"))
   async updateJobPostingById(@Param('id') id: string, @Body() updateUserDto: JobPostingDto): Promise<any | null> {
     return this.jobPostingService.updateJobPostingById(id, updateUserDto);
   }

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Request, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Get, HttpStatus, Param, Post, Put, Request, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { CompanyProfileService } from "./companyProfile.service";
 import { CompanyProfileDto } from "src/Dto/companyProfile.dto";
 import { AuthGuard } from "@nestjs/passport";
@@ -40,7 +40,10 @@ export class CompanyProfileController {
     @Get('companyDetail/:accountId')
     @UseGuards(AuthGuard("jwt"))
     async findCompanyProfile(@Param('accountId') accountId: string): Promise<any | null> {
-        return this.companyProfileService.findCompanyProfile(accountId)
+        if(accountId){
+            return this.companyProfileService.findCompanyProfile(accountId)
+        }
+        
     }
 
     @Get('getEmployerCompanyProfile')

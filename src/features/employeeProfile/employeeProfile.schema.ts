@@ -49,16 +49,3 @@ export class employeeProfile extends Document {
 }
 
 export const EmployeeProfileSchema = SchemaFactory.createForClass(employeeProfile);
-
-
-// isDeleted: {
-    //     type: Boolean,
-    //     default: false
-    // },
-    // // createdAt: {
-    //     type: Date, default: Date.now
-    // },
-    // modifiedAt: {
-    //     type: Date, default: Date.now
-    // },
-    // deletedAt: Date

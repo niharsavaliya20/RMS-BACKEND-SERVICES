@@ -12,8 +12,8 @@ export class EmployeeProfileService{
     private employeeProfileModel: Model<employeeProfile>){}
 
     async createEmployeeProfile( employeeprofileDto: EmployeeProfileDto,Id): Promise<employeeProfile>  {
-      const { designation,profilePicture, experience, address, currentSalary, expectedSalary,gender, phoneNumber,city ,state,userId} = employeeprofileDto;
-        const profile = await this.employeeProfileModel.create( {designation, profilePicture,experience,expectedSalary, address, currentSalary, gender, phoneNumber,city ,state,userId: Id });
+      const { designation,skill,profilePicture, experience, address, currentSalary, expectedSalary,gender, phoneNumber,city ,state,userId} = employeeprofileDto;
+        const profile = await this.employeeProfileModel.create( {designation,skill, profilePicture,experience,expectedSalary, address, currentSalary, gender, phoneNumber,city ,state,userId: Id });
         return profile;
       }
 

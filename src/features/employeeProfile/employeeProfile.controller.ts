@@ -7,11 +7,6 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
 import { request } from "http";
 import * as fs from 'fs';
-import { promisify } from "util";
-import path from "path";
-
-const readdirAsync = promisify(fs.readdir);
-const unlinkAsync = promisify(fs.unlink);
 
 interface UserInterface {
   _id: string,
@@ -59,6 +54,7 @@ export class EmployeeProfileController {
   }
 
   @Get('get/:id')
+  @UseGuards(AuthGuard("jwt"))
   async findById(@Param('id') id: string): Promise<employeeProfile | null> {
     return this.profileService.findById(id);
   }
@@ -70,11 +66,13 @@ export class EmployeeProfileController {
   }
 
   @Get('get/:experience')
+  @UseGuards(AuthGuard("jwt"))
   async findOne(@Param('experience') experience: string): Promise<employeeProfile | null> {
     return this.profileService.findOne(experience);
   }
 
   @Delete('delete/:id')
+  @UseGuards(AuthGuard("jwt"))
   async deleteEmployeeById(@Param('id') id: string): Promise<employeeProfile | null> {
     return this.profileService.deleteEmployeeById(id);
   }
@@ -122,15 +120,3 @@ export class EmployeeProfileController {
     return this.profileService.updateUserEmployeeProfileByUserId(userId, employeeprofileDto);
   }
 }
-
-
-
-
-
-
-// async updateEmployeeProfileByUserId(@Param('userId') userId: string,
-//    @Body() employeeprofileDto: EmployeeProfileDto,
-//    @UploadedFile() file: Express.Multer.File,): Promise<any | null> {
-//     employeeprofileDto.profilePicture = `${file.filename}`;
-//     return this.profileService.updateUserEmployeeProfileByUserId(userId, employeeprofileDto);
-//   }
