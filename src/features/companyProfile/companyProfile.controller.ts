@@ -102,4 +102,10 @@ export class CompanyProfileController {
         return this.companyProfileService.updateCompanyProfileById(accountId, companyProfileDto);
     }
 
+    @Get('allCompanyProfile')
+    @UseGuards(AuthGuard("jwt"))
+    async getAllCompanyProfile (): Promise<any | null>{
+        return this.companyProfileService.getAllCompanyProfile()
+    }
+
 }

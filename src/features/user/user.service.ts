@@ -15,8 +15,26 @@ export class UserService {
   private userModel: Model<any>) { }
 
   async getAllSignUp(): Promise<any> {
-    return this.userModel.find();
-    
+    return this.userModel.aggregate([
+      {
+        $lookup: {
+          from: 'employerprofiles', // Name of the collection to join
+          localField: '_id',
+          foreignField: 'userId',
+          as: 'employerprofile', // Alias for the joined documents
+        },
+      },
+      {
+        $lookup: {
+          from: 'employeeprofiles', // Name of the collection to join
+          localField: '_id',
+          foreignField: 'userId',
+          as: 'employeeprofile', // Alias for the joined documents
+        },
+      },
+    ]
+    );
+
   }
 
   async findUserById(id: string): Promise<any | null> {
@@ -43,16 +61,16 @@ export class UserService {
         },
       },
     ])
-  }  
+  }
 
   async usersWithEmployerProfile(): Promise<User[] | null> {
     return this.userModel.aggregate([
       {
         $match: {
-          roles: { $in : ["Employer"]},
+          roles: { $in: ["Employer"] },
           isActive: true
         },
-      }, 
+      },
       {
         $lookup: {
           from: 'employerprofiles', // Name of the collection to join
@@ -74,35 +92,35 @@ export class UserService {
     ])
   }
 
-  async userEmployerProfileId(id): Promise<any| null> {
+  async userEmployerProfileId(id): Promise<any | null> {
     return this.userModel.aggregate([
-          {
-            $match: {
-              _id: new Types.ObjectId(id), // Match specific userId
-               roles: { $in : ["Employer"]},
-              isActive: true
-            },
-          },
-            {
-              $lookup: {
-                from: 'employerprofiles', // Name of the collection to join
-                localField: '_id',
-                foreignField: 'userId',
-                as: 'employerprofile', // Alias for the joined documents
-              },
-            },
-            {
-              $addFields: {
-                profile: { $arrayElemAt: ['$employerprofile', 0] }
-              }
-            },
-            {
-              $project: {
-                employerprofile: 0 // Remove the profileData field if not needed
-              }
-            }
-          ])
+      {
+        $match: {
+          _id: new Types.ObjectId(id), // Match specific userId
+          roles: { $in: ["Employer"] },
+          isActive: true
+        },
+      },
+      {
+        $lookup: {
+          from: 'employerprofiles', // Name of the collection to join
+          localField: '_id',
+          foreignField: 'userId',
+          as: 'employerprofile', // Alias for the joined documents
+        },
+      },
+      {
+        $addFields: {
+          profile: { $arrayElemAt: ['$employerprofile', 0] }
         }
+      },
+      {
+        $project: {
+          employerprofile: 0 // Remove the profileData field if not needed
+        }
+      }
+    ])
+  }
 
   async findUserByEmail(email: string): Promise<any | null> {
     return this.userModel.findOne({ email }).exec();
@@ -112,10 +130,10 @@ export class UserService {
     return this.userModel.aggregate([
       {
         $match: {
-          roles: { $in : ["Employee"]},
+          roles: { $in: ["Employee"] },
           isActive: true
         },
-      },    
+      },
       {
         $lookup: {
           from: 'employeeprofiles', // Name of the collection to join
@@ -170,7 +188,7 @@ export class UserService {
 
   async deActivateUserById(id: string): Promise<any | null> {
     const currentDate = new Date();
-    return this.userModel.findByIdAndUpdate(id, { isActive: false ,deletedAt : currentDate},{ new: true }).exec();
+    return this.userModel.findByIdAndUpdate(id, { isActive: false, deletedAt: currentDate }, { new: true }).exec();
   }
 
   async updateUserById(id: string, updateUserDto: updateSignUpDto): Promise<any | null> {

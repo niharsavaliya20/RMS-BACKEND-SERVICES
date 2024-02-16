@@ -38,4 +38,9 @@ export class CompanyProfileService{
       async getCompanyProfileByAccountId(accountId: string): Promise<CompanyProfile | null> {
         return this.companyProfileModel.findOne({accountId}).exec();
       }
+
+      async getAllCompanyProfile(): Promise <any | null>{
+         const AllCompanyProfile =  this.companyProfileModel.find();
+         return AllCompanyProfile
+      }
 }
