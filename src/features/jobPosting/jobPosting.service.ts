@@ -16,18 +16,18 @@ export class JobPostingService {
   constructor(@InjectModel('jobposting')
   private jobPostingModel: Model<JobPosting>) { }
 
-  async jobPost(jobPostingDto: JobPostingDto, Id:string): Promise<any> {
-    
-    const { title, application, status,location,accountId, 
+  async jobPost(jobPostingDto: JobPostingDto, Id: string): Promise<any> {
+
+    const { title, application, status, location, accountId,
       salary, jobType, expectedSalary, timeAvailability, selectedTimezone,
-      jobDescription, skill, minExp, maxExp, selectedDays} = jobPostingDto;
-      
+      jobDescription, skill, minExp, maxExp, selectedDays } = jobPostingDto;
+
     const post = await this.jobPostingModel.create({
       title,
       application,
       location,
       status: Status.Active,
-      accountId : Id,
+      accountId: Id,
       salary,
       expectedSalary,
       jobDescription,
@@ -39,7 +39,7 @@ export class JobPostingService {
       selectedTimezone,
       selectedDays,
       isActive: true,
-      applied:false,
+      applied: false,
       deletedAt: null
     });
     return post;
@@ -55,11 +55,11 @@ export class JobPostingService {
 
   //  }
   //  page: number = 1, limit: number = 10
-  async getAllJobPost(page, limit,accountId): Promise<any> {
+  async getAllJobPost(page, limit, accountId): Promise<any> {
     const offset = page * limit;
     return await this.jobPostingModel.aggregate([
       {
-        $match: { accountId : accountId}
+        $match: { accountId: accountId }
       },
       {
 
@@ -78,16 +78,31 @@ export class JobPostingService {
               $limit: limit
             }
           ],
+          appliedCount: [{
+            $lookup: {
+              from: "user_jobpostings",
+              localField: "_id",
+              foreignField: "jobPostingId",
+              as: "count"
+            }
+          },
+          {
+            $project: {
+              _id: 1,
+              totalAppliedCount: { $size: "$count" }
+            }
+          }
+          ]
         },
       },
     ])
-  } 
+  }
 
   async getAllJobList(page, limit): Promise<any> {
     const offset = page * limit;
     return await this.jobPostingModel.aggregate([
       {
-        $match: { isActive : true}
+        $match: { isActive: true }
       },
       {
         $facet: {
@@ -109,34 +124,34 @@ export class JobPostingService {
       },
     ])
 
-  } 
-    // return await this.jobPostingModel.aggregate([
-    //     {
-    //       $sort:({"isActive": -1,"createdAt" : -1})
-    //     },
-    //     { 
-    //       $count: "count"
-    //     },
-    //     {
-    //       $project:{
-    //         _id: 0,
-    //         count:1
-    //       }
-    //     },
-    //     {
-    //       $facet: {
-    //       "filteredUser":[
-    //         {
-    //           $skip: offset
-    //         },
-    //         {
-    //           $limit : limit
-    //         }
-    //       ]
-    //     }}
+  }
+  // return await this.jobPostingModel.aggregate([
+  //     {
+  //       $sort:({"isActive": -1,"createdAt" : -1})
+  //     },
+  //     { 
+  //       $count: "count"
+  //     },
+  //     {
+  //       $project:{
+  //         _id: 0,
+  //         count:1
+  //       }
+  //     },
+  //     {
+  //       $facet: {
+  //       "filteredUser":[
+  //         {
+  //           $skip: offset
+  //         },
+  //         {
+  //           $limit : limit
+  //         }
+  //       ]
+  //     }}
 
-    //   ])    
-  
+  //   ])    
+
 
   async getTotalCount() {
     const totalCount = await this.jobPostingModel.countDocuments();
@@ -151,16 +166,16 @@ export class JobPostingService {
 
   async updateJobPostingById(id: string, updateUserDto: JobPostingDto): Promise<any | null> {
     const activate = "active";
-    const date =  new Date();
-    return this.jobPostingModel.findByIdAndUpdate(id, updateUserDto, { status: activate, new: true,updatedAt:date }).exec();
+    const date = new Date();
+    return this.jobPostingModel.findByIdAndUpdate(id, updateUserDto, { status: activate, new: true, updatedAt: date }).exec();
   }
 
   async getJobListBYAccountId(accountId: string): Promise<any | null> {
     const Id = new ObjectId(accountId);
     return this.jobPostingModel.aggregate([
       {
-        $match : {
-            accountId : Id
+        $match: {
+          accountId: Id
         }
       },
       {
