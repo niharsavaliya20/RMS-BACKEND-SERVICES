@@ -41,6 +41,9 @@ export class employeeProfile extends Document {
   @Prop()
   profilePicture: string;
 
+  @Prop()
+  objective: string;
+
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
