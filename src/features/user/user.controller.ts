@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Put, Query } from "@nestjs/common";
 // import { User } from "./user.schema";
 import { UserService } from "./user.service";
 import {  updateSignUpDto } from "src/Dto/updateSignUp.dto";
@@ -10,10 +10,16 @@ import { User } from "./user.schema";
 export class UserController {
   constructor(private userService: UserService) { }
 
-  @Get('allUser')
+  @Get('allUserEmployee')
   // @UseGuards(AuthGuard("jwt"))
-  getAllSignUp(): Promise<any> {
-    return this.userService.getAllSignUp();
+  getAllEmployeeUser(): Promise<any> {
+    return this.userService.getAllEmployeeUser();
+  }
+
+  @Get('allUserEmployer')
+  // @UseGuards(AuthGuard("jwt"))
+  getAllEmployerUser(): Promise<any> {
+    return this.userService.getAllEmployerUser();
   }
 
   @Get('get/:id')
@@ -22,8 +28,9 @@ export class UserController {
   }
 
   @Get('employerProfile/all')
-  async usersWithEmployerProfile(): Promise<User[] | null> {
-    return this.userService.usersWithEmployerProfile();
+  async usersWithEmployerProfile(@Query('page') page: number = 1,
+  @Query('limit', ParseIntPipe) limit: number = 10,): Promise<User[] | null> {
+    return this.userService.usersWithEmployerProfile(page,limit);
   }
 
   @Get('employerProfile/:id')
@@ -37,8 +44,9 @@ export class UserController {
   }
 
   @Get('employeeProfile/all')
-  async usersWithEmployeeWithProfile(): Promise<User[] | null> {
-    return this.userService.usersWithEmployeeWithProfile();
+  async usersWithEmployeeWithProfile(@Query('page') page: number = 1,
+  @Query('limit', ParseIntPipe) limit: number = 10,): Promise<User[] | null> {
+    return this.userService.usersWithEmployeeWithProfile(page,limit);
   }
 
   @Get('employeeProfile/:id')

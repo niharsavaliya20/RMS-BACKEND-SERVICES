@@ -1,11 +1,9 @@
 import { Body, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, Types } from "mongoose";
-// import { User } from "./user.schema";
 import { updateSignUpDto } from "src/Dto/updateSignUp.dto";
 import { User } from "./user.schema";
 import { UserInterface } from "src/Dto/interfaces/user.interface";
-// import { Userr } from "src/Dto/interfaces/user.interface";
 
 @Injectable()
 
@@ -14,15 +12,13 @@ export class UserService {
   constructor(@InjectModel('user')
   private userModel: Model<any>) { }
 
-  async getAllSignUp(): Promise<any> {
+  async getAllEmployeeUser(): Promise<any> {
     return this.userModel.aggregate([
+
       {
-        $lookup: {
-          from: 'employerprofiles', // Name of the collection to join
-          localField: '_id',
-          foreignField: 'userId',
-          as: 'employerprofile', // Alias for the joined documents
-        },
+        $match: {
+          roles: 'Employee'
+        }
       },
       {
         $lookup: {
@@ -34,6 +30,26 @@ export class UserService {
       },
     ]
     );
+
+  }
+
+  async getAllEmployerUser(): Promise<any> {
+    return this.userModel.aggregate([
+      {
+        $match: {
+          roles: 'Employer'
+        }
+      },
+      {
+        $lookup: {
+          from: 'employerprofiles', // Name of the collection to join
+          localField: '_id',
+          foreignField: 'userId',
+          as: 'employerprofile', // Alias for the joined documents
+        },
+      },
+
+    ]);
 
   }
 
@@ -63,30 +79,45 @@ export class UserService {
     ])
   }
 
-  async usersWithEmployerProfile(): Promise<User[] | null> {
+  async usersWithEmployerProfile(page, limit): Promise<User[] | null> {
+    const offset = page * limit;
     return this.userModel.aggregate([
       {
         $match: {
           roles: { $in: ["Employer"] },
           isActive: true
         },
-      },
-      {
-        $lookup: {
-          from: 'employerprofiles', // Name of the collection to join
-          localField: '_id',
-          foreignField: 'userId',
-          as: 'employerprofile', // Alias for the joined documents
-        },
-      },
-      {
-        $addFields: {
-          profile: { $arrayElemAt: ['$employerprofile', 0] }  //data comes in object
-        }
-      },
-      {
-        $project: {
-          employerprofile: 0 // Remove the profileData field if not needed
+      }, {
+        $facet: {
+          count: [
+            { $count: "totalcount" }
+          ],
+          user: [
+
+            {
+              $lookup: {
+                from: 'employerprofiles', // Name of the collection to join
+                localField: '_id',
+                foreignField: 'userId',
+                as: 'employerprofile', // Alias for the joined documents
+              },
+            },
+            {
+              $skip: offset
+            },
+            {
+              $limit: limit
+            },
+            {
+              $addFields: {
+                profile: { $arrayElemAt: ['$employerprofile', 0] }  //data comes in object
+              }
+            },
+            {
+              $project: {
+                employerprofile: 0 // Remove the profileData field if not needed
+              }
+            }]
         }
       }
     ])
@@ -126,7 +157,8 @@ export class UserService {
     return this.userModel.findOne({ email }).exec();
   }
 
-  async usersWithEmployeeWithProfile(): Promise<User[] | null> {
+  async usersWithEmployeeWithProfile(page, limit): Promise<User[] | null> {
+    const offset = page * limit;
     return this.userModel.aggregate([
       {
         $match: {
@@ -135,21 +167,36 @@ export class UserService {
         },
       },
       {
-        $lookup: {
-          from: 'employeeprofiles', // Name of the collection to join
-          localField: '_id',
-          foreignField: 'userId',
-          as: 'employeeprofile', // Alias for the joined documents
-        },
-      },
-      {
-        $addFields: {
-          profile: { $arrayElemAt: ['$employeeprofile', 0] }
-        }
-      },
-      {
-        $project: {
-          employeeprofile: 0 // Remove the profileData field if not needed
+        $facet: {
+          count: [
+            { $count: "totalcount" }
+          ],
+          user: [
+            {
+              $lookup: {
+                from: 'employeeprofiles', // Name of the collection to join
+                localField: '_id',
+                foreignField: 'userId',
+                as: 'employeeprofile', // Alias for the joined documents
+              },
+            },
+            {
+              $skip: offset
+            },
+            {
+              $limit: limit
+            },
+            {
+              $addFields: {
+                profile: { $arrayElemAt: ['$employeeprofile', 0] }
+              }
+            },
+            {
+              $project: {
+                employeeprofile: 0 // Remove the profileData field if not needed
+              }
+            }
+          ]
         }
       }
     ])
