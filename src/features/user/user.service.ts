@@ -85,7 +85,7 @@ export class UserService {
       {
         $match: {
           roles: { $in: ["Employer"] },
-          isActive: true
+          
         },
       }, {
         $facet: {
@@ -163,7 +163,7 @@ export class UserService {
       {
         $match: {
           roles: { $in: ["Employee"] },
-          isActive: true
+          
         },
       },
       {
