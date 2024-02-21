@@ -54,9 +54,9 @@ export class UserController {
     return this.userService.userEmployeeProfileId(id);
   }
 
-  @Put('delete/:id')  // deactive user
-  async deActivateUserById(@Param('id') id: string): Promise<any | null> {
-    return this.userService.deActivateUserById(id);
+  @Put('deActivate/:id')  // deactive user
+  async deActivateUserById(@Param('id') id: string,@Query('status') status:boolean): Promise<any | null> {
+    return this.userService.deActivateUserById(id,status);
   }
 
   @Put('update/:id')

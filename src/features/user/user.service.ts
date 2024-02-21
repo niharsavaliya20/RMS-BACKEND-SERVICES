@@ -233,9 +233,9 @@ export class UserService {
     ])
   }
 
-  async deActivateUserById(id: string): Promise<any | null> {
+  async deActivateUserById(id: string,status:boolean): Promise<any | null> {
     const currentDate = new Date();
-    return this.userModel.findByIdAndUpdate(id, { isActive: false, deletedAt: currentDate }, { new: true }).exec();
+    return this.userModel.findByIdAndUpdate(id, { isActive: status, deletedAt: currentDate }, { new: true }).exec();
   }
 
   async updateUserById(id: string, updateUserDto: updateSignUpDto): Promise<any | null> {
