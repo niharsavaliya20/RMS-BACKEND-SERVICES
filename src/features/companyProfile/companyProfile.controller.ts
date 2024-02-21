@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Put, Request, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Get, HttpStatus, Param, ParseIntPipe, Post, Put, Query, Request, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
 import { CompanyProfileService } from "./companyProfile.service";
 import { CompanyProfileDto } from "src/Dto/companyProfile.dto";
 import { AuthGuard } from "@nestjs/passport";
@@ -40,10 +40,10 @@ export class CompanyProfileController {
     @Get('companyDetail/:accountId')
     @UseGuards(AuthGuard("jwt"))
     async findCompanyProfile(@Param('accountId') accountId: string): Promise<any | null> {
-        if(accountId){
+        if (accountId) {
             return this.companyProfileService.findCompanyProfile(accountId)
         }
-        
+
     }
 
     @Get('getEmployerCompanyProfile')
@@ -84,9 +84,9 @@ export class CompanyProfileController {
         @UploadedFile() file: Express.Multer.File): Promise<any | null> {
         const accountId = req.user.accountId
         const existingProfile = await this.companyProfileService.getCompanyProfileByAccountId(accountId);
-        console.log("??????????????????",existingProfile)
+        console.log("??????????????????", existingProfile)
         const oldFilePath = `./companyProfilePicture/${accountId}/${existingProfile.profilePicture}`  // all file path
-        console.log("all details....",oldFilePath)
+        console.log("all details....", oldFilePath)
         if (file) {
 
             const allfile = fs.existsSync(oldFilePath)  // get true or false
@@ -104,8 +104,14 @@ export class CompanyProfileController {
 
     @Get('allCompanyProfile')
     @UseGuards(AuthGuard("jwt"))
-    async getAllCompanyProfile (): Promise<any | null>{
-        return this.companyProfileService.getAllCompanyProfile()
+    async getAllCompanyProfile(@Query('page') page: number = 1,
+    @Query('limit', ParseIntPipe) limit: number = 10,): Promise<any | null> {
+        return this.companyProfileService.getAllCompanyProfile(page,limit)
+    }
+
+    @Put('deActivate/:id')  // deactive user
+    async deActivateCompanyProfileById(@Param('id') id: string, @Query('status') status: boolean): Promise<any | null> {
+        return this.companyProfileService.deActivateCompanyProfileById(id, status);
     }
 
 }

@@ -10,6 +10,7 @@ export class CompanyProfileDto {
     aboutCompany :string;
     profilePicture: string;
     address : string;
+    isActive : boolean;
     country : string;
     state : string;
 

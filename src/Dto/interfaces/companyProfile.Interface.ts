@@ -7,6 +7,7 @@ export interface CompanyProfile {
     email: string;
     location: string;
     accountId : string;
+    isActive : boolean;
     aboutCompany :string
     address : string
 

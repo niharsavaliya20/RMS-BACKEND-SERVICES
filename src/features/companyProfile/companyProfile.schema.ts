@@ -43,6 +43,9 @@ export class CompanyProfile extends Document {
   @Prop()
   profilePicture: string;
 
+  @Prop()
+  isActive: boolean;
+
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'account',
