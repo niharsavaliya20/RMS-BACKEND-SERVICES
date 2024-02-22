@@ -14,11 +14,3 @@ export class LoginDto {
   @MinLength(6)
   readonly password: string;
 }
-
-// @IsNotEmpty()
-  // @IsString()
-  // readonly loginType: string;
-
-  // @IsNotEmpty()
-  // @IsArray()
-  // roles: string[]; 

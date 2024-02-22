@@ -16,7 +16,7 @@ interface UserInterface {
   loginType: String,
   role: [],
   profile: [],
-  //  profile: Profile
+  
 }
 
 @Controller('employee')
@@ -49,7 +49,7 @@ export class EmployeeProfileController {
     const userId: string = req.user._id;
 
     employeeprofileDto.profilePicture = `${file.filename}`;
-    console.log("......console", employeeprofileDto.profilePicture);
+   
     return this.profileService.createEmployeeProfile(employeeprofileDto, userId);
   }
 

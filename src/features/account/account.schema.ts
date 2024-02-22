@@ -19,16 +19,5 @@ export class Account extends Document {
   @Prop()
   deletedAt: Date;
 
-  // @Prop({
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'JobPosting',
-  // })
-  // jobPostingId: JobPosting;
-
-  // @Prop({ type: [{ type: Types.ObjectId,
-  //    ref: 'User' }] })
-  // users: User[];  
-
-
 }
 export const AccountSchema = SchemaFactory.createForClass(Account);

@@ -12,7 +12,6 @@ export class CompanyProfileService {
   private companyProfileModel: Model<CompanyProfile>) { }
 
   async createCompanyProfile(CompanyProfileDto: CompanyProfileDto, Id): Promise<any> {
-    // const { email, status}= accountDto;
     const { aboutCompany, profilePicture, country, companySize, foundedIn, email, address, state, phone, location } = CompanyProfileDto
 
     const companyProfile = await this.companyProfileModel.create({ aboutCompany, address, country, companySize, profilePicture, state, foundedIn, email, phone, location, isActive: true, accountId: Id });

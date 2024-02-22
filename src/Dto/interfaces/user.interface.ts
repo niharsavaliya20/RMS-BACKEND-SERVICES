@@ -1,7 +1,5 @@
 import { Document } from 'mongoose';
 import { employerProfile } from 'src/features/employerProfile/employer.schema';
-// import { Profile } from './profile.interface';
-
 export interface UserInterface extends Document {
     name: string,
     email: string,

@@ -13,7 +13,6 @@ export class EmployeeProfileDto {
     userId : string;
     skill : string;
     objective : string;
-  static profilePicture: any;
-//   static originalFilename: any;
+    static profilePicture: any;
 
 }

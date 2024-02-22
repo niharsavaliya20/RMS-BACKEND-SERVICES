@@ -15,13 +15,6 @@ export class UserJobPostingController {
     return this.userJobPostingService.appliedJobPost(userJobPostingDto, Id);
   }
 
-  // @Get('/appliedJob')
-  // @UseGuards(AuthGuard("jwt"))
-  // async findJobPosting(@Body() jobPostingId,@Request() req): Promise<any | null> {
-  //   const userId:string = req.user._id
-  //   return this.userJobPostingService.findJobPosting(jobPostingId.jobPostingId,userId);
-  // }
-
   @Get('/matchJobPostingId')
   @UseGuards(AuthGuard("jwt"))
   async findJobPostingId(@Request() req): Promise<any | null> {

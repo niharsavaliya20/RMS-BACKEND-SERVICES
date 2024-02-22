@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, UseGuards, Param, Delete, Put } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { EmployerProfileService } from "./employer.service";
-// import { employerProfile } from "./employer.schema";
 import { EmployerProfileDto } from "src/Dto/employerProfile.dto";
 
 @Controller('employer')
